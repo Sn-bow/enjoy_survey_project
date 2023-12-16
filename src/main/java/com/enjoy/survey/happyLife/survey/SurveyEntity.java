@@ -14,6 +14,7 @@ public class SurveyEntity {
     int member_id;
     Timestamp start_date;
     Timestamp end_date;
+    int hit;
     boolean delete_state;
     boolean alarm_state;
 
