@@ -6,6 +6,7 @@ import com.enjoy.survey.happyLife.User.UserEntity;
 import com.enjoy.survey.happyLife.survey.dto.SurveyDeleteDto;
 import com.enjoy.survey.happyLife.survey.dto.SurveyRegDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,40 +25,17 @@ public class SurveyService {
     private final SurveyPictureService surveyPictureService;
 
 
+    // getSurveyList 와 getSurveyCount 의 쿼리를 합쳐서 사용할 수 있도록 해보면 좋을것 같음
     public List<SurveyEntity> getSurveyList(int page, String search, String order) {
-
-        // TODO : 페이지 마다 시작 index 와 각 페이지 마다 다른 번호 순서를 출력 해야함
-        String filter = "id";
-        String orderBy = "desc";
-        // 페이지마다 시작 값을 바꿔야함
-        int rpage = page;
-
-        switch (order) {
-            case "많이 참여한 순서" -> {
-                filter = "hit";
-                orderBy = "desc";
-                break;
-            }
-            case "적게 참여한 순서" -> {
-                filter = "hit";
-                orderBy = "asc";
-                break;
-            }
-            case "최신 순서" -> {
-                filter = "id";
-                orderBy = "desc";
-                break;
-            }
-            case "오래된 순서" -> {
-                filter = "id";
-                orderBy = "asc";
-                break;
-            }
-        }
-
+        int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
+        OrderSwitch orderSwitch = new OrderSwitch();
+        return surveyDao.getSurveyList(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1));
+    }
 
-        return surveyDao.getSurveyList(rpage, rSearch, filter, orderBy);
+    public int getSurveyCount(int page, String search, String order) {
+        String rSearch = "%" + search + "%";
+        return surveyDao.getSurveyCount(rSearch);
     }
 
     public SurveyEntity getSurvey(int surveyId) {
@@ -93,7 +71,7 @@ public class SurveyService {
         return result;
     }
 
-    // 등록된 설문 삭제 서비스단
+    // 등록된 설문 삭제 서비스단 : 현재 쿼리가 delete로 되어있음 리팩토링때 update로 delete_state를  true 로 변경하는 방식으로 바꿔보기
     public int deleteSurvey(SurveyDeleteDto surveyId, Authentication authentication) {
         UserEntity user = userDao.findByUsername(authentication.getName());
         int result = surveyDao.deleteSurvey(surveyId.getSurveyId(), user.getId());
@@ -102,6 +80,20 @@ public class SurveyService {
             surveyDao.deleteSurveyQuestion(surveyId.getSurveyId());
         }
         return result;
+    }
+
+    public int attendSurvey(int sqId, String username){
+        int userId = userDao.findByUsername(username).getId();
+        // TODO : survey question id가 내가 선택한 survey id 와 일치 하는지 조건문
+        // TODO : 이미 같은 유저가 설문에 참여하였으면 참여하지 못하도록 설정 : 그럼 Detail 페이지에서 참여 유저정보를 보내줘야함
+        return surveyDao.attendSurvey(sqId, userId);
+    }
+
+    public int attendSurveyUpdate(int sqId, String username) {
+        int userId = userDao.findByUsername(username).getId();
+        // TODO : survey question id가 내가 선택한 survey id 와 일치 하는지 조건문
+        // TODO : 이미 같은 유저가 설문에 참여하였으면 참여하지 못하도록 설정 : 그럼 Detail 페이지에서 참여 유저정보를 보내줘야함
+        return surveyDao.attendSurveyUpdate(sqId, userId);
     }
 
 }
