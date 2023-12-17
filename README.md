@@ -57,6 +57,9 @@
 # DB
 
 - 외래키 연결 전
+
+<br/>
+
 ![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/42c6e2e0-626e-44c5-9d7b-93318b797aff)
 
 
