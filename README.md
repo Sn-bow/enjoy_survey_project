@@ -54,5 +54,34 @@
 
 <br/>
 
+# DB
 
-# 
+- 외래키 연결 전
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/42c6e2e0-626e-44c5-9d7b-93318b797aff)
+
+
+<br/>
+
+# API
+
+<br/>
+
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/d315268e-6640-4c49-ae15-a6d2f47b5ac3)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/95a438b9-ea44-46d8-9334-691ae95a0881)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/8af12ec0-4f48-4adf-916d-7c57c63bb765)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/ce3caebd-1087-4357-a66f-f95dcf3960d2)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/5c3aa67b-28c4-4474-be4f-ba4f387f2e6a)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/8810512f-4b4d-4775-a3e4-4e3b8efab63c)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/d796bf54-774d-488b-9654-bf0d3b131ed4)
+</br>
+![image](https://github.com/Sn-bow/enjoy_survey_project/assets/107871028/0a4e3375-f939-4b8d-9214-7c5840fc7a18)
+
+
+
+
