@@ -1,4 +1,4 @@
-package com.enjoy.survey.happyLife.User.dto;
+package com.enjoy.survey.happyLife.user.dto;
 
 
 import lombok.Data;

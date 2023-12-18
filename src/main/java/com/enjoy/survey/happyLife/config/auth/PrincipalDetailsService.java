@@ -1,8 +1,8 @@
 package com.enjoy.survey.happyLife.config.auth;
 
 
-import com.enjoy.survey.happyLife.User.UserDao;
-import com.enjoy.survey.happyLife.User.UserEntity;
+import com.enjoy.survey.happyLife.user.UserDao;
+import com.enjoy.survey.happyLife.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

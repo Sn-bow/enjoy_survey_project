@@ -4,8 +4,9 @@ package com.enjoy.survey.happyLife.survey.dto;
 import lombok.Data;
 
 @Data
-public class SurveyAttendDto {
+public class QuestionDto {
 
+    int id;
+    String question;
     int survey_id;
-    int question_id;
 }

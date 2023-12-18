@@ -1,4 +1,4 @@
-package com.enjoy.survey.happyLife.survey;
+package com.enjoy.survey.happyLife.common;
 
 import lombok.Getter;
 import lombok.Setter;

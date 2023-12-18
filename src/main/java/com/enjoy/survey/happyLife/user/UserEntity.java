@@ -1,4 +1,4 @@
-package com.enjoy.survey.happyLife.User;
+package com.enjoy.survey.happyLife.user;
 
 
 import lombok.Data;

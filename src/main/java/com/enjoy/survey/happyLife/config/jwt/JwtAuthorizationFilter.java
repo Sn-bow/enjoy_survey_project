@@ -2,8 +2,8 @@ package com.enjoy.survey.happyLife.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.enjoy.survey.happyLife.User.UserDao;
-import com.enjoy.survey.happyLife.User.UserEntity;
+import com.enjoy.survey.happyLife.user.UserDao;
+import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.config.auth.PrincipalDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

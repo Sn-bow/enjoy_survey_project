@@ -1,4 +1,4 @@
-package com.enjoy.survey.happyLife.User;
+package com.enjoy.survey.happyLife.user;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

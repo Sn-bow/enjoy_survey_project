@@ -1,8 +1,8 @@
-package com.enjoy.survey.happyLife.User;
+package com.enjoy.survey.happyLife.user;
 
 
 
-import com.enjoy.survey.happyLife.User.dto.UserSignUpDto;
+import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

@@ -1,6 +1,6 @@
 package com.enjoy.survey.happyLife.config.auth;
 
-import com.enjoy.survey.happyLife.User.UserEntity;
+import com.enjoy.survey.happyLife.user.UserEntity;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

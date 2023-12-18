@@ -1,7 +1,7 @@
-package com.enjoy.survey.happyLife.User;
+package com.enjoy.survey.happyLife.user;
 
 
-import com.enjoy.survey.happyLife.User.dto.UserSignUpDto;
+import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

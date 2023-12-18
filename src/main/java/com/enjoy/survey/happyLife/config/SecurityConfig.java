@@ -1,6 +1,6 @@
 package com.enjoy.survey.happyLife.config;
 
-import com.enjoy.survey.happyLife.User.UserDao;
+import com.enjoy.survey.happyLife.user.UserDao;
 import com.enjoy.survey.happyLife.config.jwt.JwtAuthenticationFilter;
 import com.enjoy.survey.happyLife.config.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
