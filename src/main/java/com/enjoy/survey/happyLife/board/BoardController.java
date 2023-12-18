@@ -30,9 +30,7 @@ public class BoardController {
 
     @Operation(summary = "board detail 요청 API", description = "board detail 요청 API")
     @GetMapping("/user/board/detail")
-    public BoardEntity getBoardDetail(@RequestParam(name = "boardId") int boardId) throws Exception {
-        // TODO : HashMap<String, Object> 타입으로 boardDetail 과 commentList 를 출력해야함
-        //  : 그러므로 이후 comment List 출력부분 생성후 코드 수정 필요
+    public HashMap<String, Object> getBoardDetail(@RequestParam(name = "boardId") int boardId) throws Exception {
         return boardService.getBoardDetail(boardId);
     }
 
