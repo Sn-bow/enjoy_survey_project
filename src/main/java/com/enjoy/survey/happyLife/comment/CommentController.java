@@ -61,9 +61,9 @@ public class CommentController {
     public String choiceDeleteComment(@RequestBody CommentChoiceDeleteDto commentChoiceDeleteDto) throws Exception {
         int result = commentService.choiceDeleteComment(commentChoiceDeleteDto);
         if (result > 0) {
-            return "선택한 댓글이 삭제를 완료하였습니다.";
+            return "선택한 댓글이 삭제를 완료 하였습니다.";
         }else {
-            throw new Exception("선택한 댓글 삭제에 실패하였습니다");
+            throw new Exception("선택한 댓글 삭제에 실패 하였습니다");
         }
     }
 
