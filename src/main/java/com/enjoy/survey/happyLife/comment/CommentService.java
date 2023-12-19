@@ -1,6 +1,7 @@
 package com.enjoy.survey.happyLife.comment;
 
 
+import com.enjoy.survey.happyLife.comment.dto.CommentChoiceDeleteDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentDeleteDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentModifyDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentRegDto;
@@ -29,6 +30,17 @@ public class CommentService {
 
     public int deleteComment(CommentDeleteDto commentDeleteDto) {
         return commentDao.deleteComment(commentDeleteDto.getCmt_id());
+    }
+
+    public int choiceDeleteComment(CommentChoiceDeleteDto commentChoiceDeleteDto) {
+        int result = 0;
+        for(int cmtId : commentChoiceDeleteDto.getCmt_id()) {
+            result = commentDao.deleteComment(cmtId);
+            if(result < 0) {
+                break;
+            }
+        }
+        return result;
     }
 
 

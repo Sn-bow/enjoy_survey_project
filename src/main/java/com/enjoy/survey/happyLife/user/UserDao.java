@@ -19,4 +19,6 @@ public interface UserDao {
     @Insert("insert into areas_of_interest(member_id, topic_id) values(#{member_id}, #{topic_id})")
     void saveSelectedTopic(int member_id, int topic_id);
 
+
+
 }

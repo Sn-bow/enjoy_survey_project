@@ -1,6 +1,7 @@
 package com.enjoy.survey.happyLife.user;
 
 import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,4 +52,44 @@ public class UserController {
     public String getSimpleUserInfo() {
         return "simple user information";
     }
+
+//    // TODO : 유저 디테일 출력 : MyPage
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp1() {}
+//
+//    // TODO : 유저가 작성한 게시물 리스트 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp2() {}
+//
+//    // TODO : 유저가 작성한 댓글 리스트 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp3() {}
+//
+//    // TODO : 유저가 작성한 1 대 1 리스트 문의 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp4() {}
+//
+//    // TODO : 유저가 작성한 QnA 리스트 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp5() {}
+//
+//    // TODO : 유저가 작성한 설문 리스트 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp6() {}
+//
+//    // TODO : 유저가 참여한 설문 리스트 출력
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp7() {}
+//
+//    // TODO : 회원 탈퇴 API
+//    @Operation(summary = "", description = "")
+//    @PostMapping("")
+//    public void temp8() {}
 }

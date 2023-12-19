@@ -51,5 +51,7 @@ public class InquiryController {
         }
     }
 
+    // TODO : 1 대 1 문의 삭제 API 작성 필요 : delete_state 활용
+    // TODO : 1 대 1 문의 answer가 존재하지 않을때 수정할 수 있어야함
 
 }

@@ -43,8 +43,6 @@ public class SecurityConfig {
         http.authorizeRequests(request ->
                 request.requestMatchers("/user/**")
                         .hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/manager/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
                         .anyRequest().permitAll()

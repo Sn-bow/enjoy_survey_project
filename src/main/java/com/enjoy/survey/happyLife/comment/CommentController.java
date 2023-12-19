@@ -1,10 +1,7 @@
 package com.enjoy.survey.happyLife.comment;
 
 
-import com.enjoy.survey.happyLife.comment.dto.CommentDeleteDto;
-import com.enjoy.survey.happyLife.comment.dto.CommentListDto;
-import com.enjoy.survey.happyLife.comment.dto.CommentModifyDto;
-import com.enjoy.survey.happyLife.comment.dto.CommentRegDto;
+import com.enjoy.survey.happyLife.comment.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +54,16 @@ public class CommentController {
             return "댓글 삭제에 성공하셨습니다.";
         }else {
             throw new Exception("댓글 삭제에 실패하였습니다");
+        }
+    }
+
+    @PostMapping("/user/commentList/delete")
+    public String choiceDeleteComment(@RequestBody CommentChoiceDeleteDto commentChoiceDeleteDto) throws Exception {
+        int result = commentService.choiceDeleteComment(commentChoiceDeleteDto);
+        if (result > 0) {
+            return "선택한 댓글이 삭제를 완료하였습니다.";
+        }else {
+            throw new Exception("선택한 댓글 삭제에 실패하였습니다");
         }
     }
 

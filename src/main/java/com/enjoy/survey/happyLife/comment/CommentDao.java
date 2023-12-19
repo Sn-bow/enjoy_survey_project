@@ -15,7 +15,7 @@ public interface CommentDao {
 
 
     // comment 리스트 출력
-    @Select("select * from comment where board_id = #{boardId}")
+    @Select("select * from comment where board_id = #{boardId} and delete_state = false")
     List<CommentEntity> getCommentList(int boardId);
 
     // comment 등록
