@@ -13,6 +13,8 @@ import java.util.List;
 @Mapper
 public interface InquiryDao {
 
+
+    // TODO: 1대1 설문에서도 페이징이 필요함
     @Select("select * from one_to_one_inquiry where member_id = #{userId}")
     List<InquiryEntity> getInquiryList(int userId);
 

@@ -18,6 +18,7 @@ public class InquiryService {
     private final InquiryDao inquiryDao;
 
     public List<InquiryEntity> getInquiryList(String jwtToken) {
+        // TODO: 1대1 설문에서도 페이징이 필요함
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.findByUsername(username).getId();
 

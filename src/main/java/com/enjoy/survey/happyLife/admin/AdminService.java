@@ -7,6 +7,7 @@ import com.enjoy.survey.happyLife.common.OrderSwitch;
 import com.enjoy.survey.happyLife.inquiry.InquiryService;
 import com.enjoy.survey.happyLife.qna.QnAService;
 import com.enjoy.survey.happyLife.survey.SurveyService;
+import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +35,21 @@ public class AdminService {
     }
 
     // TODO : 유저 리스트 출력
-    public void temp2() {}
+    public HashMap<String, Object> getUserList(String search, int page) {
+        int rPage = (page - 1) * 10;
+        String rSearch = "%" + search + "%";
+        List<UserEntity> userEntityList = adminDao.getUserList(rSearch, rPage);
+        int userEntityListCount = adminDao.getUserListCount(rSearch);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("userEntityList", userEntityList);
+        data.put("userEntityListCount", userEntityListCount);
+        return data;
+    }
 
     // TODO : 유저 디테일 출력
-    public void temp3() {}
+    public UserEntity getUserDetailAdminVer(int userId) {
+        return adminDao.getUserInfoAdminVer(userId);
+    }
 
     // TODO : 유저 선택 삭제 (= 비활성화)
     public void temp4() {}

@@ -20,6 +20,7 @@ public class CommentController {
     @Operation(summary = "댓글 리스트 출력 API",description = "댓글 리스트 출력 API")
     @PostMapping("/user/comment/list")
     public List<CommentEntity> getCommentList(@RequestBody CommentListDto commentListDto) {
+        // TODO : comment List 출력시에 페이징 처리를 해야할것 같음
         return commentService.getCommentList(commentListDto.getBoardId());
     }
 

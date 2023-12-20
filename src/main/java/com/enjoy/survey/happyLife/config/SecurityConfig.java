@@ -38,7 +38,7 @@ public class SecurityConfig {
         http.addFilter(corsConfig.corsFilter()); // cors 허용 설정
         http.formLogin(login -> login.disable());
         http.httpBasic(basic -> basic.disable());
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager));
+        http.addFilter(new JwtAuthenticationFilter(authenticationManager, userDao));
         http.addFilter(new JwtAuthorizationFilter(authenticationManager, userDao));
         http.authorizeRequests(request ->
                 request.requestMatchers("/user/**")

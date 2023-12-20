@@ -1,6 +1,7 @@
 package com.enjoy.survey.happyLife.admin;
 
 
+import com.enjoy.survey.happyLife.user.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +24,23 @@ public class AdminController {
 
     }
 
-//    // TODO : 유저 리스트 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp2() {}
-//
-//    // TODO : 유저 디테일 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp3() {}
-//
+    // TODO : 유저 리스트 출력
+    @Operation(summary = "유저 리스트 출력", description = "비활성화된 유저가 포함된 유저 리스트 출력")
+    @PostMapping("/admin/user/list")
+    public HashMap<String, Object> getUserList(
+            @RequestParam(name = "search") String search,
+            @RequestParam(name = "page") int page
+    ) {
+        return adminService.getUserList(search, page);
+    }
+
+    // TODO : 유저 디테일 출력
+    @Operation(summary = "유저 디테일 출력", description = "비활성화된 유저 포함 유저 디테일 출력 API")
+    @PostMapping("/admin/user/detail")
+    public UserEntity getUserDetailAdminVer(@RequestParam(name = "userId") int userId) {
+        return adminService.getUserDetailAdminVer(userId);
+    }
+
 //    // TODO : 유저 선택 삭제 (= 비활성화)
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
@@ -40,32 +48,32 @@ public class AdminController {
 //
 //    // ================= 유저 & 게시물, 댓글 & 1대1 문의, QnA & 설문 ===========
 //
-//    // TODO : 유저가 작성한 게시물 리스트 출력
+//    // TODO : 유저가 작성한 게시물 리스트 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp5() {}
 //
-//    // TODO : 유저가 작성한 댓글 리스트 출력
+//    // TODO : 유저가 작성한 댓글 리스트 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp6() {}
 //
-//    // TODO : 유저가 작성한 1 대 1 리스트 문의 출력
+//    // TODO : 유저가 작성한 1 대 1 리스트 문의 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp7() {}
 //
-//    // TODO : 유저가 작성한 QnA 리스트 출력
+//    // TODO : 유저가 작성한 QnA 리스트 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp8() {}
 //
-//    // TODO : 유저가 작성한 설문 리스트 출력
+//    // TODO : 유저가 작성한 설문 리스트 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp9() {}
 //
-//    // TODO : 유저가 참여한 설문 리스트 출력
+//    // TODO : 유저가 참여한 설문 리스트 출력 | where delete_state = false 조건 걸지않고
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")
 //    public void temp10() {}

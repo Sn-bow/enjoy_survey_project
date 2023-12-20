@@ -3,17 +3,16 @@ package com.enjoy.survey.happyLife.user.dto;
 
 import lombok.Data;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Data
-public class UserSignUpDto {
-
+public class UserInfoDto {
+    int id;
     String username;
-    String password;
     String name;
     String email;
-    String role;
     String birth;
     String gender;
-    List<Integer> listTopicId;
+    Timestamp create_date;
+    boolean delete_state;
 }

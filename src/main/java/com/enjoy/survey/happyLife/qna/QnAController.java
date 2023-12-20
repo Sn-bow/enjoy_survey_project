@@ -18,6 +18,7 @@ public class QnAController {
     @Operation(summary = "QnA list 출력 API", description = "QnA list 출력 API")
     @PostMapping("/qna/list")
     public List<QnAEntity> getQnAList() {
+        // TODO: QnA에서도 페이징이 필요함
         return qnAService.getQnAList();
     }
 

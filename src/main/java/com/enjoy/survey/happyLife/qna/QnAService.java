@@ -17,6 +17,7 @@ public class QnAService {
     private final UserDao userDao;
 
     public List<QnAEntity> getQnAList() {
+        // TODO: QnA에서도 페이징이 필요함
         return qnADao.getQnAList();
     }
 

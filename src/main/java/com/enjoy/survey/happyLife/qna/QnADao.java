@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface QnADao {
 
+    // TODO: QnA에서도 페이징이 필요함
     @Select("select * from question_and_answer")
     List<QnAEntity> getQnAList();
 

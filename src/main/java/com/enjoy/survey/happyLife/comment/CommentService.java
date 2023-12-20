@@ -17,6 +17,7 @@ public class CommentService {
     private final CommentDao commentDao;
 
     public List<CommentEntity> getCommentList(int boardId) {
+        // TODO : comment List 출력시에 페이징 처리를 해야할것 같음
         return commentDao.getCommentList(boardId);
     }
 
