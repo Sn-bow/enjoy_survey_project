@@ -53,6 +53,7 @@ public class UserService {
         return userDao.getUserSimpleInfo(username);
     }
 
+    // TODO : order 수정 필요
     public HashMap<String, Object> getBoardListForUser(int page, String search, String order, String jwtToken) {
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.getUserSimpleInfo(username).getId();

@@ -4,15 +4,17 @@ import com.enjoy.survey.happyLife.board.BoardEntity;
 import com.enjoy.survey.happyLife.board.BoardService;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
+import com.enjoy.survey.happyLife.inquiry.InquiryEntity;
 import com.enjoy.survey.happyLife.inquiry.InquiryService;
+import com.enjoy.survey.happyLife.qna.QnAEntity;
 import com.enjoy.survey.happyLife.qna.QnAService;
+import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.survey.SurveyService;
 import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.UserService;
-import io.swagger.v3.oas.annotations.Operation;
+import com.enjoy.survey.happyLife.user.dto.UserAttendSurveyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +33,24 @@ public class AdminService {
 
     // ============== 유저 ====================
     // TODO : 유저 삭제 (= 비활성화)
-    public void deleteUser() {
+    public int deleteUser(int userId) {
+        return adminDao.leaveUserAdminVer(userId);
+    }
+
+    // TODO : 유저 선택 삭제 (= 비활성화)
+    public int choiceDeleteUser(List<Integer> userIds) {
+        int result = 0;
+        for(int userId : userIds) {
+            result = adminDao.leaveUserAdminVer(userId);
+            if(result == 0) {
+                break;
+            }
+        }
+        return result;
     }
 
     // TODO : 유저 리스트 출력
+    // TODO : order 수정 필요
     public HashMap<String, Object> getUserList(String search, int page) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
@@ -51,29 +67,71 @@ public class AdminService {
         return adminDao.getUserInfoAdminVer(userId);
     }
 
-    // TODO : 유저 선택 삭제 (= 비활성화)
-    public void temp4() {}
+
 
     // ================= 유저 & 게시물, 댓글 & 1대1 문의, QnA & 설문 ===========
 
     // TODO : 유저가 작성한 게시물 리스트 출력
-    public void temp5() {
+    // TODO : order 수정 필요
+    public HashMap<String, Object> getBoardListAdminVer(int page, String search, String order, int userId) {
+
+        int rPage = (page - 1) * 10;
+        String rSearch = "%" + search + "%";
+        // 오더 부분 수정 필요 -> 필터 와 같은 타이틀 수정이 필요함
+        OrderSwitch orderSwitch = new OrderSwitch();
+        List<BoardEntity> boardList = adminDao.getBoardListForUserAdminVer(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1), userId);
+        int count = adminDao.getBoardCountForUserAdminVer(rSearch, userId);
+        HashMap<String, Object> boardListAndCount = new HashMap<>();
+        boardListAndCount.put("boardList", boardList);
+        boardListAndCount.put("count", count);
+        return boardListAndCount;
     }
 
     // TODO : 유저가 작성한 댓글 리스트 출력
-    public void temp6() {}
+    // TODO : order 수정 필요
+    public HashMap<String, Object> getCommentListAdminVer(String search, int userId, int page) {
+        int rPage = (page - 1) * 10;
+        String rSearch = "%" + search + "%";
+        List<CommentEntity> cmtList = adminDao.getCommentListForUserAdminVer(userId, rSearch, rPage);
+        int cmtListCount = adminDao.getCommentListForUserCountAdminVer(userId, rSearch);
+        HashMap<String, Object> cmtListAndCount = new HashMap<>();
+        cmtListAndCount.put("cmtList", cmtList);
+        cmtListAndCount.put("count", cmtListCount);
+        return cmtListAndCount;
+    }
 
     // TODO : 유저가 작성한 1 대 1 리스트 문의 출력
-    public void temp7() {}
+    public List<InquiryEntity> getInquiryListAdminVer(int userId) {
+        return adminDao.getInquiryListAdminVer(userId);
+    }
 
     // TODO : 유저가 작성한 QnA 리스트 출력
-    public void temp8() {}
+    public List<QnAEntity> getQnAListAdminVer(int userId) {
+        return adminDao.getQnAListForUserAdminVer(userId);
+    }
 
     // TODO : 유저가 작성한 설문 리스트 출력
-    public void temp9() {}
+    public List<SurveyEntity> getSurveyListAdminVer(int page, String search, String order, int userId) {
+        int rPage = (page - 1) * 10;
+        String rSearch = "%" + search + "%";
+       // TODO : 해당 order 부분 변경 필요 현재 설문 order로 되어있지만
+        // TODO : 다른 ordeSwitch 를 사용한 filter 와 orderBy 부분 조건문이 잘못되어있음
+        OrderSwitch orderSwitch = new OrderSwitch();
+
+        return adminDao.getSurveyListForUserAdminVer(page, search, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1), userId);
+    }
 
     // TODO : 유저가 참여한 설문 리스트 출력
-    public void temp10() {}
+    public HashMap<String, Object> getAttendSurveyListAdminVer(int userId, String search, int page) {
+        int rPage = (page - 1) * 10;
+        String rSearch = "%" + search + "%";
+        List<UserAttendSurveyDto> userAttendSurveyDtos = adminDao.getSurveyAttendListForUserAdminVer(userId, rSearch, rPage);
+        int userAttendSurveyListCount = adminDao.getSurveyAttendCountAdminVer(userId, rSearch);
+        HashMap<String, Object> attendSuvAndCount = new HashMap<>();
+        attendSuvAndCount.put("atdSurveyList", userAttendSurveyDtos);
+        attendSuvAndCount.put("atdSvListCount", userAttendSurveyListCount);
+        return attendSuvAndCount;
+    }
 
     // =============== 게시물, 댓글 ====================
     public HashMap<String, Object> getBoardListAdminVer(int page, String search, String order) {

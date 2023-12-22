@@ -15,7 +15,7 @@ public interface InquiryDao {
 
 
     // TODO: 1대1 설문에서도 페이징이 필요함
-    @Select("select * from one_to_one_inquiry where member_id = #{userId}")
+    @Select("select * from one_to_one_inquiry where member_id = #{userId} and delete_state = false")
     List<InquiryEntity> getInquiryList(int userId);
 
     @Select("select * from one_to_one_inquiry where id = #{inquiry_id}")

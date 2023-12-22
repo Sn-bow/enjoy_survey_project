@@ -56,9 +56,11 @@ public interface UserDao {
 
 
     // TODO: QnA에서도 페이징이 필요함
-    @Select("select * from question_and_answer where member_id = #{userId}")
+    @Select("select * from question_and_answer where member_id = #{userId} and delete_state = false")
     List<QnAEntity> getQnAListForUser(int userId);
 
+
+    // survey
     @Select("select * from survey " +
             "where survey_content like #{search} and delete_state = false and member_id = #{userId}" +
             "ORDER BY ${filter} ${orderBy} LIMIT #{page}, 10")
