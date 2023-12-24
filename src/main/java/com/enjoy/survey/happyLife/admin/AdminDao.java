@@ -122,5 +122,21 @@ public interface AdminDao {
             "where survey_content like #{search}")
     int getSurveyAttendCountAdminVer(int userId, String search);
 
+    @Select("select * from one_to_one_inquiry " +
+            "where title like #{search} order by ${filter} ${orderBy} limit #{page}, 10")
+    List<InquiryEntity> getInquiryAllListAdminVer(String search, String filter, String orderyBy, int page);
+
+    @Select("select count(*) from one_to_one_inquiry " +
+            "where title like #{search}")
+    int getInquiryAllListCountAdminVer(String search);
+
+
+    // TODO: QnA에서도 페이징이 필요함
+    @Select("select * from question_and_answer where title like #{search} order by ${filter} ${orderBy} limit #{page}, 10")
+    List<QnAEntity> getQnAAllListAdminVer(String search, String filter, String orderBy, int page);
+
+    @Select("select coount(*) from question_and_answer where title like #{search}")
+    int getQnAAllListCountAdminVer(String search);
+
 
 }

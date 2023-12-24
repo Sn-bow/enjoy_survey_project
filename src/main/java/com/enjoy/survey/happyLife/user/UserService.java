@@ -60,9 +60,15 @@ public class UserService {
 
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-        OrderSwitch orderSwitch = new OrderSwitch();
-        List<BoardEntity> boardList = userDao.getBoardListForUser(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1), userId);
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "게시판");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
+        List<BoardEntity> boardList = userDao.getBoardListForUser(
+                rPage, rSearch, filter, orderBy, userId
+        );
         int count = userDao.getBoardCountForUser(rSearch, userId);
+
         HashMap<String, Object> boardListAndCount = new HashMap<>();
         boardListAndCount.put("boardList", boardList);
         boardListAndCount.put("count", count);
@@ -86,14 +92,15 @@ public class UserService {
     public List<SurveyEntity> getSurveyListForUser(int page, String search, String order, String jwtToken) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-        OrderSwitch orderSwitch = new OrderSwitch();
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.getUserSimpleInfo(username).getId();
+
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "설문");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
         return userDao.getSurveyListForUser(
-                rPage, rSearch,
-                orderSwitch.switching(order).get(0),
-                orderSwitch.switching(order).get(1),
-                userId
+                rPage, rSearch, filter, orderBy, userId
         );
     }
 
@@ -102,8 +109,11 @@ public class UserService {
         String rSearch = "%" + search + "%";
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.getUserSimpleInfo(username).getId();
+
+        // TODO : Paging 하고 order by 해야함
         List<UserAttendSurveyDto> userAttendSurveyDtos = userDao.getSurveyAttendListForUser(userId, rSearch, rPage);
         int surveyAttendCount = userDao.getSurveyAttendCount(userId, rSearch);
+
         HashMap<String, Object> data = new HashMap<>();
         data.put("surveyAttendListForUser", userAttendSurveyDtos);
         data.put("surveyAttendCount", surveyAttendCount);
