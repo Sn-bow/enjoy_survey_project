@@ -7,10 +7,7 @@ import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.user.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +45,7 @@ public class AdminController {
 
     // TODO : 유저 리스트 출력
     @Operation(summary = "유저 리스트 출력", description = "비활성화된 유저가 포함된 유저 리스트 출력")
-    @PostMapping("/admin/user/list")
+    @GetMapping("/admin/user/list")
     public HashMap<String, Object> getUserList(
             @RequestParam(name = "search") String search,
             @RequestParam(name = "page") int page
@@ -58,7 +55,7 @@ public class AdminController {
 
     // TODO : 유저 디테일 출력
     @Operation(summary = "유저 디테일 출력", description = "비활성화된 유저 포함 유저 디테일 출력 API")
-    @PostMapping("/admin/user/detail")
+    @GetMapping("/admin/user/detail")
     public UserEntity getUserDetailAdminVer(@RequestParam(name = "userId") int userId) {
         return adminService.getUserDetailAdminVer(userId);
     }
@@ -88,7 +85,7 @@ public class AdminController {
     // TODO : 유저가 작성한 게시물 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 게시물 리스트 출력", description = "비활서오하 된 게시물도 보이게됨")
-    @PostMapping("/admin/user/board/list")
+    @GetMapping("/admin/user/board/list")
     public HashMap<String, Object> getBoardListAdminVer(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "search", defaultValue = "") String search,
@@ -101,7 +98,7 @@ public class AdminController {
     // TODO : 유저가 작성한 댓글 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 댓글 리스트 출력", description = "유저가 작성한 댓글 리스트 출력 ( 비활성화된 댓글 포함)")
-    @PostMapping("/admin/user/comment/list")
+    @GetMapping("/admin/user/comment/list")
     public HashMap<String, Object> getCommentListAdminVer(
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "userId") int userId,
@@ -113,7 +110,7 @@ public class AdminController {
     // TODO : 유저가 작성한 1 대 1 리스트 문의 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 1 대 1 리스트 문의 출력", description = "유저가 작성한 1 대 1 리스트 문의 출력 비활성화된 문의 포함")
-    @PostMapping("/admin/user/inquiry/list")
+    @GetMapping("/admin/user/inquiry/list")
     public List<InquiryEntity> getInquiryListAdminVer(@RequestParam(name = "userId") int userId) {
         return adminService.getInquiryListAdminVer(userId);
     }
@@ -121,7 +118,7 @@ public class AdminController {
     // TODO : 유저가 작성한 QnA 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 QnA 리스트 출력", description = "유저가 작성한 QnA 리스트 출력 비활성화 된 QnA 포함")
-    @PostMapping("/admin/user/qna/list")
+    @GetMapping("/admin/user/qna/list")
     public List<QnAEntity> getQnAListAdminVer(@RequestParam(name = "userId") int userId) {
         return adminService.getQnAListAdminVer(userId);
     }
@@ -129,7 +126,7 @@ public class AdminController {
     // TODO : 유저가 작성한 설문 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 설문 리스트 출력", description = "유저가 작성한 설문 리스트 출력 비활성화 된 설문 포함")
-    @PostMapping("/admin/user/survey/list")
+    @GetMapping("/admin/user/survey/list")
     public List<SurveyEntity> getSurveyListAdminVer(
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "userId") int userId,
@@ -142,7 +139,7 @@ public class AdminController {
     // TODO : 유저가 참여한 설문 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
     @Operation(summary = "유저가 참여한 설문 리스트 출력 ", description = "유저가 참여한 설문 리스트 출력 비활성화 포함")
-    @PostMapping("/admin/user/attend/survey/list")
+    @GetMapping("/admin/user/attend/survey/list")
     public HashMap<String, Object> getAttendSurveyListAdminVer(
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "userId") int userId,
@@ -154,7 +151,7 @@ public class AdminController {
     // =============== 게시물, 댓글 ====================
 
     @Operation(summary = "관리자 페이지 게시물 리스트 출력 (비활성화된 게시물도 출력)", description = "관리자 페이지 게시물 리스트 출력 (비활성화된 게시물도 출력)")
-    @PostMapping("/admin/board/list") // 삭제(=비활성화) 된 게시물도 출력
+    @GetMapping("/admin/board/list") // 삭제(=비활성화) 된 게시물도 출력
     public HashMap<String, Object> getBoardListAdminVer(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "search", defaultValue = "") String search,
@@ -164,7 +161,7 @@ public class AdminController {
     }
 
     @Operation(summary = "관리자 페이지 게시물 디테일 출력 (비활성화된 게시물도 출력)", description = "관리자 페이지 게시물 디테일 출력 (비활성화된 게시물도 출력)")
-    @PostMapping("/admin/board/detail") // 삭제(=비활성화) 된 게시물도 출력
+    @GetMapping("/admin/board/detail") // 삭제(=비활성화) 된 게시물도 출력
     public HashMap<String, Object> getBoardDetailAdminVer(@RequestParam(name = "boardId") int boardId) throws Exception {
         return adminService.getBoardDetailAdminVer(boardId);
     }
@@ -175,26 +172,32 @@ public class AdminController {
 
     // ================== 1대1 문의, QnA =================
 
-    // TODO : 전체 1대1 문의 리스트 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp17() {}
-//
-//    // TODO : 1대1 문의 디테일 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp18() {}
-//
-//    // TODO : 전체 QnA 리스트 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp19() {}
-//
-//    // TODO : QnA 디테일 출력
-//    @Operation(summary = "", description = "")
-//    @PostMapping("")
-//    public void temp20() {}
-//
+     // TODO : 전체 1대1 문의 리스트 출력
+    @Operation(summary = "전체 1대1 문의 리스트 출력", description = "전체 1대1 문의 리스트 출력 API ( 비활성화 된 문의 리스트 포함 )")
+    @GetMapping("/admin/inquiry/list")
+    public HashMap<String, Object> getInquiryListAdminVer(
+            @RequestParam(name = "search", defaultValue = "") String search,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "order", defaultValue = "최신 순서") String order
+    ) {
+        return adminService.getInquiryListAdminVer(search, page, order);
+    }
+
+//    // TODO : 1대1 문의 디테일 출력 : 기존 API로 대체 getInquiry();
+
+    // TODO : 전체 QnA 리스트 출력
+    @Operation(summary = "전체 QnA 리스트 출력", description = "전체 QnA 리스트 출력 비활성화 포함")
+    @PostMapping("/admin/qna/list")
+    public HashMap<String, Object> getQnAListAdminVer(
+            @RequestParam(name = "search", defaultValue = "") String search,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "order", defaultValue = "최신 순서") String order
+    ) {
+        return adminService.getQnAListAdminVer(search, order, page);
+    }
+
+//    // TODO : QnA 디테일 출력 : 기존 API로 대체 getQnA();
+
 //    // TODO : 1대1 문의 삭제
 //    @Operation(summary = "", description = "")
 //    @PostMapping("")

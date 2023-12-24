@@ -1,5 +1,6 @@
 package com.enjoy.survey.happyLife.qna;
 
+import com.enjoy.survey.happyLife.common.OrderSwitch;
 import com.enjoy.survey.happyLife.qna.dto.QnAQuestionModifyDto;
 import com.enjoy.survey.happyLife.qna.dto.QnAQuestionRegDto;
 import com.enjoy.survey.happyLife.user.JWTUsernameCheck;
@@ -7,6 +8,7 @@ import com.enjoy.survey.happyLife.user.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -18,6 +20,12 @@ public class QnAService {
 
     public List<QnAEntity> getQnAList() {
         // TODO: QnA에서도 페이징이 필요함
+//        int rPage = (page - 1) * 10;
+//        String rSearch = "%" + search + "%";
+//        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "QnA");
+//        String filter = orderSwitch.get("filter");
+//        String orderBy = orderSwitch.get("orderBy");
+
         return qnADao.getQnAList();
     }
 

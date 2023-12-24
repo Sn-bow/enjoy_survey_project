@@ -5,9 +5,11 @@ import com.enjoy.survey.happyLife.comment.dto.CommentChoiceDeleteDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentDeleteDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentModifyDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentRegDto;
+import com.enjoy.survey.happyLife.common.OrderSwitch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -17,7 +19,14 @@ public class CommentService {
     private final CommentDao commentDao;
 
     public List<CommentEntity> getCommentList(int boardId) {
+
         // TODO : comment List 출력시에 페이징 처리를 해야할것 같음
+//        String rSearch = "%" + search + "%";
+//        int rPage = (page - 1) * 10;
+//        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "댓글");
+//        String filter = orderSwitch.get("filter");
+//        String orderBy = orderSwitch.get("orderBy");
+
         return commentDao.getCommentList(boardId);
     }
 

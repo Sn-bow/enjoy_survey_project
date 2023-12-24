@@ -26,9 +26,17 @@ public class BoardService {
     public HashMap<String, Object> getBoardList(int page, String search, String order) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-        OrderSwitch orderSwitch = new OrderSwitch();
-        List<BoardEntity> boardList = boardDao.getBoardList(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1));
+
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "게시판");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
+
+        List<BoardEntity> boardList = boardDao.getBoardList(
+                rPage, rSearch, filter, orderBy
+        );
         int count = boardDao.getBoardCount(rSearch);
+
         HashMap<String, Object> boardListAndCount = new HashMap<>();
         boardListAndCount.put("boardList", boardList);
         boardListAndCount.put("count", count);
@@ -77,6 +85,7 @@ public class BoardService {
     }
 
     public int modifyBoard(BoardModifyFormDto boardModifyFormDto, String jwtToken) {
+        // TODO : 수정부분 데이터가 들어오지 않았을경우 기존의 데이터를 불러와서 처리하는 작업이 필요할 수 있음 아님 프론트에서 설정
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.findByUsername(username).getId();
         String title = boardModifyFormDto.getTitle();

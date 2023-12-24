@@ -27,8 +27,11 @@ public class SurveyService {
     public List<SurveyEntity> getSurveyList(int page, String search, String order) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-        OrderSwitch orderSwitch = new OrderSwitch();
-        return surveyDao.getSurveyList(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1));
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "설문");
+        String filter = orderSwitch.get("filte");
+        String orderBy = orderSwitch.get("orderBy");
+
+        return surveyDao.getSurveyList(rPage, rSearch, filter, orderBy);
     }
 
     public int getSurveyCount(int page, String search, String order) {

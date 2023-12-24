@@ -13,7 +13,7 @@ import java.util.List;
 public interface QnADao {
 
     // TODO: QnA에서도 페이징이 필요함
-    @Select("select * from question_and_answer")
+    @Select("select * from question_and_answer where delete_state = false")
     List<QnAEntity> getQnAList();
 
     @Select("select * from question_and_answer where id = #{qnaId}")

@@ -54,11 +54,14 @@ public class AdminService {
     public HashMap<String, Object> getUserList(String search, int page) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
+        // TODO : UserList paging order 부분 수정 필요
         List<UserEntity> userEntityList = adminDao.getUserList(rSearch, rPage);
         int userEntityListCount = adminDao.getUserListCount(rSearch);
+
         HashMap<String, Object> data = new HashMap<>();
         data.put("userEntityList", userEntityList);
         data.put("userEntityListCount", userEntityListCount);
+
         return data;
     }
 
@@ -78,12 +81,17 @@ public class AdminService {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
         // 오더 부분 수정 필요 -> 필터 와 같은 타이틀 수정이 필요함
-        OrderSwitch orderSwitch = new OrderSwitch();
-        List<BoardEntity> boardList = adminDao.getBoardListForUserAdminVer(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1), userId);
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "게시판");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
+        List<BoardEntity> boardList = adminDao.getBoardListForUserAdminVer(rPage, rSearch, filter, orderBy, userId);
         int count = adminDao.getBoardCountForUserAdminVer(rSearch, userId);
+
         HashMap<String, Object> boardListAndCount = new HashMap<>();
         boardListAndCount.put("boardList", boardList);
         boardListAndCount.put("count", count);
+
         return boardListAndCount;
     }
 
@@ -92,21 +100,26 @@ public class AdminService {
     public HashMap<String, Object> getCommentListAdminVer(String search, int userId, int page) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
+        // TODO : cmtList Paging 처리 필요
         List<CommentEntity> cmtList = adminDao.getCommentListForUserAdminVer(userId, rSearch, rPage);
         int cmtListCount = adminDao.getCommentListForUserCountAdminVer(userId, rSearch);
+
         HashMap<String, Object> cmtListAndCount = new HashMap<>();
         cmtListAndCount.put("cmtList", cmtList);
         cmtListAndCount.put("count", cmtListCount);
+
         return cmtListAndCount;
     }
 
     // TODO : 유저가 작성한 1 대 1 리스트 문의 출력
     public List<InquiryEntity> getInquiryListAdminVer(int userId) {
+        // TODO : 리스트 페이징 처리 작업 필요
         return adminDao.getInquiryListAdminVer(userId);
     }
 
     // TODO : 유저가 작성한 QnA 리스트 출력
     public List<QnAEntity> getQnAListAdminVer(int userId) {
+        // TODO : 리스트 페이징 처리 작업 필요
         return adminDao.getQnAListForUserAdminVer(userId);
     }
 
@@ -114,22 +127,26 @@ public class AdminService {
     public List<SurveyEntity> getSurveyListAdminVer(int page, String search, String order, int userId) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-       // TODO : 해당 order 부분 변경 필요 현재 설문 order로 되어있지만
-        // TODO : 다른 ordeSwitch 를 사용한 filter 와 orderBy 부분 조건문이 잘못되어있음
-        OrderSwitch orderSwitch = new OrderSwitch();
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "설문");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
 
-        return adminDao.getSurveyListForUserAdminVer(page, search, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1), userId);
+        return adminDao.getSurveyListForUserAdminVer(page, search, filter, orderBy, userId);
     }
 
     // TODO : 유저가 참여한 설문 리스트 출력
     public HashMap<String, Object> getAttendSurveyListAdminVer(int userId, String search, int page) {
+
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
+        // TODO : 참여한 설문 리스트 페이징 처리 필요
         List<UserAttendSurveyDto> userAttendSurveyDtos = adminDao.getSurveyAttendListForUserAdminVer(userId, rSearch, rPage);
         int userAttendSurveyListCount = adminDao.getSurveyAttendCountAdminVer(userId, rSearch);
+
         HashMap<String, Object> attendSuvAndCount = new HashMap<>();
         attendSuvAndCount.put("atdSurveyList", userAttendSurveyDtos);
         attendSuvAndCount.put("atdSvListCount", userAttendSurveyListCount);
+
         return attendSuvAndCount;
     }
 
@@ -138,18 +155,25 @@ public class AdminService {
         // 삭제(=비활성화) 된 게시물도 보이게됨
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
-        OrderSwitch orderSwitch = new OrderSwitch();
-        List<BoardEntity> boardList = adminDao.getBoardListAdminVer(rPage, rSearch, orderSwitch.switching(order).get(0), orderSwitch.switching(order).get(1));
-        int count = adminDao.getBoardCountAdminVer(rSearch);
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "게시판");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
         HashMap<String, Object> boardListAndCount = new HashMap<>();
+
+        List<BoardEntity> boardList = adminDao.getBoardListAdminVer(rPage, rSearch, filter, orderBy);
+        int count = adminDao.getBoardCountAdminVer(rSearch);
+
         boardListAndCount.put("boardList", boardList);
         boardListAndCount.put("count", count);
+
         return boardListAndCount;
     }
 
     public HashMap<String, Object> getBoardDetailAdminVer(int boardId) throws Exception {
         // 삭제(=비활성화) 된 게시물도 보이게됨
         BoardEntity board = adminDao.getBoardDetailAdminVer(boardId);
+        // TODO : OrderSwitch Class 사용해서 검색 기능 구현
         List<CommentEntity> commentList = adminDao.getCommentListAdminVer(boardId);
         HashMap<String, Object> boardDetailAndComments = new HashMap<>();
         boardDetailAndComments.put("boardDetail", board);
@@ -164,13 +188,45 @@ public class AdminService {
     // ================== 1대1 문의, QnA =================
 
     // TODO : 전체 1대1 문의 리스트 출력
-    public void temp17() {}
+    public HashMap<String, Object> getInquiryListAdminVer(String search, int page, String order) {
 
-    // TODO : 1대1 문의 디테일 출력
-    public void temp18() {}
+        String rSearch = "%" + search + "%";
+        int rPage = (page - 1) * 10;
+
+        // TODO : search 의 경우 param 을 추가해서 title 만이 아니라 다른것들도 선택해서 검색할 수 있게 하면 좋을것같음
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "1대1문의");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
+
+        List<InquiryEntity> inquiryEntityAllList = adminDao.getInquiryAllListAdminVer(rSearch, filter, orderBy, rPage);
+        int inquiryEntityAllListCount = adminDao.getInquiryAllListCountAdminVer(rSearch);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("inqAllList", inquiryEntityAllList);
+        data.put("inqAllListCount", inquiryEntityAllListCount);
+
+        return data;
+    }
 
     // TODO : 전체 QnA 리스트 출력
-    public void temp19() {}
+    public HashMap<String, Object> getQnAListAdminVer(String search, String order, int page) {
+        String rSearch = "%" + search + "%";
+        int rPage = (page - 1) * 10;
+
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "QnA");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
+
+        List<QnAEntity> qnAEntityAllList = adminDao.getQnAAllListAdminVer(rSearch, filter, orderBy, rPage);
+        int qnAEntityAllListCount = adminDao.getQnAAllListCountAdminVer(rSearch);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("QnAAllList", qnAEntityAllList);
+        data.put("QnAAllListCount", qnAEntityAllListCount);
+
+        return data;
+    }
 
     // TODO : QnA 디테일 출력
     public void temp20() {}
