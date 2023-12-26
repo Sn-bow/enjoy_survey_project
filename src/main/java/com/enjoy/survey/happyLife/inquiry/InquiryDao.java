@@ -26,4 +26,10 @@ public interface InquiryDao {
 
     @Update("update one_to_one_inquiry set answer = #{answer} where id = #{inquiry_id}")
     int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto);
+
+    @Update("update one_to_one_inquiry set delete_state = true where id = #{inquiryId}")
+    int deleteInquiry(int inquiryId);
+
+    @Update("update one_to_one_inquiry set question = #{question} where id = #{inquiryId}")
+    int modifyInquiryQuestion(String question, int inquiryId);
 }
