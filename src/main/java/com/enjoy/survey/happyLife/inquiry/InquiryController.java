@@ -34,24 +34,36 @@ public class InquiryController {
         int result = inquiryService.setInquiryQuestion(inquiryQuestionRegDto);
         if (result > 0) {
             return "1대1 문의를 등록하셨습니다";
-        }else {
-          throw new Exception("1대1 문의 등록에 실패하였습니다.");
+        } else {
+            throw new Exception("1대1 문의 등록에 실패하였습니다.");
         }
     }
 
-    // admin 폴더에 생성할 맵핑
-    @Operation(summary = "1대1 답변 등록", description = "관리자의 1대1 답변 등록 API")
-    @PostMapping("/admin/inquiry/answer")
-    public String setInquiryAnswer(@RequestBody InquiryAnswerRegDto inquiryAnswerRegDto) throws Exception {
-        int result = inquiryService.setInquiryAnswer(inquiryAnswerRegDto);
-        if (result > 0) {
-            return "1대1 문의 답변을 등록하셨습니다";
-        }else {
-            throw new Exception("1대1 문의 답변 등록에 실패하였습니다.");
-        }
-    }
+
 
     // TODO : 1 대 1 문의 삭제 API 작성 필요 : delete_state 활용
+    @Operation(summary = "1 대 1 문의 삭제 API", description = "1 대 1 문의 삭제 API answer가 존재시에는 삭제 불가능 (admin 만 삭제 가능)")
+    @PostMapping("/user/inquiry/delete")
+    public String deleteInquiry(@RequestParam(name = "inquiryId") int inquiryId) {
+        int result = inquiryService.deleteInquiry(inquiryId);
+        if(result > 0) {
+            return "1대1 문의 삭제가 정상적으로 완료되었습니다.";
+        }else {
+            return "1대1 문의 삭제에 실패하셨습니다.";
+        }
+    }
     // TODO : 1 대 1 문의 answer가 존재하지 않을때 수정할 수 있어야함
-
+    @Operation(summary = "1 대 1 문의 question 수정 API", description = "1 대 1 문의 수정 API answer가 존재시에는 수정 불가능")
+    @PostMapping("/user/inquiry/question/modify")
+    public String modifyInquiryQuestion(
+            @RequestBody String question, // TODO : dto 만들어서 수정
+            @RequestBody Integer inquiryId
+    ) {
+        int result = inquiryService.modifyInquiry(question, inquiryId);
+        if(result > 0) {
+            return "1대1 문의 수정이 정상적으로 완료되었습니다.";
+        }else {
+            return "1대1 문의 수정이 실패하셨습니다.";
+        }
+    }
 }

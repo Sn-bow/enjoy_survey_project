@@ -71,15 +71,15 @@ public interface SurveyDao {
     @Insert("insert into survey_question(question, survey_id) values(#{question}, #{survey_id})")
     int setQuestion(String question, int survey_id);
 
-    // TODO : 해당 부분 쿼리를 update로 delete_state 속성 값을 true로 변경해야함
-    @Delete("delete from survey where id = #{surveyId} and member_id = #{userId} ")
+    @Update("update survey set delete_state = true where id = #{surveyId} and member_id = #{userId}")
     int deleteSurvey(int surveyId, int userId);
 
-    @Delete("delete from survey_question where survey_id = #{surveyId}")
-    int deleteSurveyQuestion(int surveyId);
-
-    @Delete("delete from survey_picture where survey_id = #{surveyId}")
-    int deleteSurveyPicture(int surveyId);
+    // 삭제가 아니라 데이터 보존을 위해서 survey 부분을 update 로 delete_state = true 로 비활성화 작업
+//    @Delete("delete from survey_question where survey_id = #{surveyId}")
+//    int deleteSurveyQuestion(int surveyId);
+//
+//    @Delete("delete from survey_picture where survey_id = #{surveyId}")
+//    int deleteSurveyPicture(int surveyId);
 
     // 설문 참여
     @Insert("insert into participate_in_the_survey(sq_id, member_id) values(#{sq_id}, #{user_id})")

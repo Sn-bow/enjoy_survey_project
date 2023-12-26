@@ -1,15 +1,20 @@
 package com.enjoy.survey.happyLife.admin;
 
+import com.enjoy.survey.happyLife.admin.dto.QnAAnswerDto;
 import com.enjoy.survey.happyLife.board.BoardEntity;
 import com.enjoy.survey.happyLife.board.BoardService;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
 import com.enjoy.survey.happyLife.inquiry.InquiryEntity;
 import com.enjoy.survey.happyLife.inquiry.InquiryService;
+import com.enjoy.survey.happyLife.inquiry.dto.InquiryAnswerRegDto;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
 import com.enjoy.survey.happyLife.qna.QnAService;
+import com.enjoy.survey.happyLife.survey.SurveyDao;
 import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.survey.SurveyService;
+import com.enjoy.survey.happyLife.survey.dto.QuestionCountDto;
+import com.enjoy.survey.happyLife.survey.dto.SurveyDetailDto;
 import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.UserService;
 import com.enjoy.survey.happyLife.user.dto.UserAttendSurveyDto;
@@ -30,6 +35,7 @@ public class AdminService {
     private final InquiryService inquiryService;
     private final QnAService qnAService;
     private final AdminDao adminDao;
+    private final SurveyDao surveyDao;
 
     // ============== 유저 ====================
     // TODO : 유저 삭제 (= 비활성화)
@@ -187,6 +193,10 @@ public class AdminService {
 
     // ================== 1대1 문의, QnA =================
 
+    public int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto) {
+        return adminDao.setInquiryAnswer(inquiryAnswerRegDto);
+    }
+
     // TODO : 전체 1대1 문의 리스트 출력
     public HashMap<String, Object> getInquiryListAdminVer(String search, int page, String order) {
 
@@ -228,45 +238,94 @@ public class AdminService {
         return data;
     }
 
-    // TODO : QnA 디테일 출력
-    public void temp20() {}
-
     // TODO : 1대1 문의 삭제
-    public void temp21() {}
+    public int deleteInquiryAdminVer(int inquiryId) {
+        return adminDao.deleteInquiryAdminVer(inquiryId);
+    }
 
     // TODO : 1대1 문의 선택 삭제
-    public void temp22() {}
-
-    // TODO : 1대1 문의 답변 생성
-    public void temp23() {}
-
-    // TODO : 1대1 문의 답변 수정
-    public void temp24() {}
+    public int listDeleteInquiryAdminVer(List<Integer> inquiryIds) {
+        int result = 0;
+        for (int inquiryId : inquiryIds) {
+            result = adminDao.deleteInquiryAdminVer(inquiryId);
+            if (result == 0) {
+                break;
+            }
+        }
+        return result;
+    }
 
     // TODO : QnA 삭제
-    public void temp25() {}
+    public int deleteQnAAdnminVer(int qnaId) {
+        return qnAService.deleteQnA(qnaId);
+    }
 
     // TODO : QnA 선택 삭제
-    public void temp26() {}
+    public int deleteQnAListAdminVer(List<Integer> qnaIds) {
+        int result = 0;
+        for (int qnaId : qnaIds) {
+            result = qnAService.deleteQnA(qnaId);
+            if (result == 0) {
+                break;
+            }
+        }
+        return result;
+    }
 
     // TODO : QnA Answer 생성
-    public void temp27() {}
-
-    // TODO : QnA Answer 수정
-    public void temp28() {}
+    public int setQnAAnswer(QnAAnswerDto qnAAnswerDto) {
+        return adminDao.setQnAAnswer(qnAAnswerDto);
+    }
 
     // =================== 설문 =======================
 
     // TODO : 전체 설문 리스트 출력
-    public void temp29() {}
+    public HashMap<String, Object> getSurveyListAdminVer(int page, String search, String order) {
+        int rPage = (page -1 ) * 10;
+        String rSearch = "%" + search + "%";
+        HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "설문");
+        String filter = orderSwitch.get("filter");
+        String orderBy = orderSwitch.get("orderBy");
 
-    // TODO : 설문 디테일 출력
-    public void temp30() {}
+        List<SurveyEntity> surveyListAdminVer = adminDao.getSurveyListAdminVer(rPage, rSearch, filter, orderBy);
+        int surveyListAdminVerCount = adminDao.getSurveyCountAdminVer(search);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("surveyList", surveyListAdminVer);
+        data.put("surveyListCount", surveyListAdminVerCount);
+
+        return data;
+
+    }
+
+    // TODO : 설문 디테일 출력 :
+    public HashMap<String, Object> getSurveyDetailAdminVer(int surveyId) {
+        SurveyDetailDto surveyDetailDto = adminDao.getSurveyDetail1AdminVer(surveyId);
+        List<QuestionCountDto> questionCountDtoList = surveyDao.getSurveyEndDetail1(surveyId);
+//        surveyDao.getSurveyDetail1(surveyId);
+//        surveyDao.getSurveyDetail1(surveyId);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("surveyDetail", surveyDetailDto);
+        data.put("questionCount", questionCountDtoList);
+        return data;
+    }
 
     // TODO : 설문 삭제
-    public void temp31() {}
+    public int deleteSurveyAdminVer(int surveyId) {
+        // admin의 경우 계정이 비할성화 되어있어도 삭제(비활성화)가 가능
+        return adminDao.deleteSurveyAdminVer(surveyId);
+    }
 
     // TODO : 설문 선택 삭제
-    public void temp32() {}
+    public int deleteSurveyListAdminVer(List<Integer> surveyIds) {
+        int result = 0;
+        for (int surveyId : surveyIds) {
+            result = adminDao.deleteSurveyAdminVer(surveyId);
+            if (result == 0) {
+                break;
+            }
+        }
+        return result;
+    }
 
 }

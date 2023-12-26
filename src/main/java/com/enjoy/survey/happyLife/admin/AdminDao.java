@@ -1,14 +1,19 @@
 package com.enjoy.survey.happyLife.admin;
 
 
+import com.enjoy.survey.happyLife.admin.dto.QnAAnswerDto;
 import com.enjoy.survey.happyLife.board.BoardEntity;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.inquiry.InquiryEntity;
+import com.enjoy.survey.happyLife.inquiry.dto.InquiryAnswerRegDto;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
 import com.enjoy.survey.happyLife.survey.SurveyEntity;
+import com.enjoy.survey.happyLife.survey.dto.QuestionCountDto;
+import com.enjoy.survey.happyLife.survey.dto.SurveyDetailDto;
 import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.dto.UserAttendSurveyDto;
 import com.enjoy.survey.happyLife.user.dto.UserInfoDto;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -130,6 +135,8 @@ public interface AdminDao {
             "where title like #{search}")
     int getInquiryAllListCountAdminVer(String search);
 
+    @Update("update one_to_one_inquiry set answer = #{answer} where id = #{inquiry_id}")
+    int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto);
 
     // TODO: QnA에서도 페이징이 필요함
     @Select("select * from question_and_answer where title like #{search} order by ${filter} ${orderBy} limit #{page}, 10")
@@ -138,5 +145,57 @@ public interface AdminDao {
     @Select("select coount(*) from question_and_answer where title like #{search}")
     int getQnAAllListCountAdminVer(String search);
 
+    @Update("update one_to_one_inquiry set delete_state = true where id = #{inquiryId}")
+    int deleteInquiryAdminVer(int inquiryId);
+
+
+    @Update("update question_and_answer set answer = #{answer} where id = #{qnaId}")
+    int setQnAAnswer(QnAAnswerDto qnAAnswerDto);
+
+    // 설문
+
+    @Select("select * from survey " +
+            "where survey_content like #{search} " +
+            "ORDER BY ${filter} ${orderBy} LIMIT #{page}, 10")
+    List<SurveyEntity> getSurveyListAdminVer(int page, String search, String filter, String orderBy);
+
+    @Select("select count(id) from survey " +
+            "where survey_content like #{search}")
+    int getSurveyCountAdminVer(String search);
+
+
+
+    // admin version으로 delete_state = true여도 보여져야함 설문 디테일 페이지 중 설문 참여를 위한 쿼리문 set1, set2 : 주제, 내용, 사진, 만료시간, 시작시간, 참여수
+    @Select("select su.*, t.topic_name " +
+            "from (select s.*, p.orgNm, p.savedNm, p.savedPath from survey s " +
+            "left join (select orgNm, savedNm, savedPath, survey_id from survey_picture) p " +
+            "on s.id = p.survey_id where id = #{surveyId}) su " +
+            "join topic t on su.topic_id = t.id")
+    SurveyDetailDto getSurveyDetail1AdminVer(int surveyId);
+
+    // 설문 디테일 페이지 마감시간이 다되었을경우 각 질문들의 카운트 출력에 필요한 쿼리 set2
+    @Select("SELECT " +
+            "    q.id, " +
+            "    q.question, " +
+            "    q.survey_id, " +
+            "    COUNT(p.id) AS participation_count " +
+            "FROM " +
+            "    survey_question q " +
+            "LEFT JOIN " +
+            "    participate_in_the_survey p ON q.id = p.sq_id " +
+            "WHERE " +
+            "    q.survey_id = #{surveyId} " +
+            "GROUP BY " +
+            "    q.id, q.question, q.survey_id")
+    List<QuestionCountDto> getSurveyEndDetail1(int surveyId);
+
+    // TODO : 설문 디테일 페이지 마감시간이 다 되었을 경우 각 질문들의 남, 여 비율 (%) 쿼리 set2
+    void getSurveyEndDetail2(int surveyId);
+
+    // TODO : 설문 디테일 페이지 마감시간이 다 되었을 경우 각 질문들의 10대, 20대, 30대, 기타 비율 (%) 쿼리 set2
+    void getSurveyEndDetail3(int surveyId);
+
+    @Update("update survey set delete_state = true where id = #{surveyId}")
+    int deleteSurveyAdminVer(int surveyId);
 
 }

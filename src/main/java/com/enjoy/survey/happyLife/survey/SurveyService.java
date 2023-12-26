@@ -84,11 +84,13 @@ public class SurveyService {
     // 등록된 설문 삭제 서비스단 : 현재 쿼리가 delete로 되어있음 리팩토링때 update로 delete_state를  true 로 변경하는 방식으로 바꿔보기
     public int deleteSurvey(SurveyDeleteDto surveyId, String username) {
         UserEntity user = userDao.findByUsername(username);
-        int result = surveyDao.deleteSurvey(surveyId.getSurveyId(), user.getId());
-        if (result > 0) {
-            surveyDao.deleteSurveyPicture(surveyId.getSurveyId());
-            surveyDao.deleteSurveyQuestion(surveyId.getSurveyId());
-        }
+        int result = 0;
+        // 해당 유저 계정이 비할성화가 안되어있을때 삭제 가능
+        if(!user.isDelete_state()) surveyDao.deleteSurvey(surveyId.getSurveyId(), user.getId());
+//        if (result > 0) {
+//            surveyDao.deleteSurveyPicture(surveyId.getSurveyId());
+//            surveyDao.deleteSurveyQuestion(surveyId.getSurveyId());
+//        }
         return result;
     }
 
