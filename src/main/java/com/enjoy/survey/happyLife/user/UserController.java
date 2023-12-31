@@ -3,7 +3,6 @@ package com.enjoy.survey.happyLife.user;
 import com.enjoy.survey.happyLife.board.BoardService;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
-import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.user.dto.UserInfoDto;
 import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import com.enjoy.survey.happyLife.user.dto.UserSimpleInfoDto;
@@ -99,7 +98,7 @@ public class UserController {
     // TODO : 유저가 작성한 설문 리스트 출력
     @Operation(summary = "유저가 생성한 설문 리스트 출력", description = "유저가 생성한 설문 리스트 출력 API")
     @PostMapping("/user/survey/list/forUser")
-    public List<SurveyEntity> getSurveyListForUser(
+    public HashMap<String, Object> getSurveyListForUser(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "order", defaultValue = "최신 순서") String order,

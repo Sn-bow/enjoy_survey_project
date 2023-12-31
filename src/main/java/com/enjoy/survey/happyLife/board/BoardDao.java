@@ -19,6 +19,9 @@ public interface BoardDao {
             "where content like #{search} and delete_state = false")
     int getBoardCount(String search);
 
+    @Select("select max(id) from board where member_id = #{userId} and delete_state = false order by id desc")
+    int getNewBoardId(int userId);
+
     @Select("select * from board where id = #{boardId} and delete_state = false")
     BoardEntity getBoardDetail(int boardId);
 

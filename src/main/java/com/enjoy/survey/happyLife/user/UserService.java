@@ -5,7 +5,6 @@ import com.enjoy.survey.happyLife.board.BoardEntity;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
-import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.user.dto.UserAttendSurveyDto;
 import com.enjoy.survey.happyLife.user.dto.UserInfoDto;
 import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
@@ -89,7 +88,7 @@ public class UserService {
         return userDao.getQnAListForUser(userId);
     }
 
-    public List<SurveyEntity> getSurveyListForUser(int page, String search, String order, String jwtToken) {
+    public HashMap<String, Object> getSurveyListForUser(int page, String search, String order, String jwtToken) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
@@ -99,9 +98,13 @@ public class UserService {
         String filter = orderSwitch.get("filter");
         String orderBy = orderSwitch.get("orderBy");
 
-        return userDao.getSurveyListForUser(
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("surveyList", userDao.getSurveyListForUser(
                 rPage, rSearch, filter, orderBy, userId
-        );
+        ));
+        data.put("count", userDao.getSurveyListCountForUser(rSearch, userId));
+
+        return data;
     }
 
     public HashMap<String, Object> getSurveyAttendListForUser(String jwtToken, String search, int page) {

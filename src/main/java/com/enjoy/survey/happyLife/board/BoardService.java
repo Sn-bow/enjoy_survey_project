@@ -3,14 +3,18 @@ package com.enjoy.survey.happyLife.board;
 
 import com.enjoy.survey.happyLife.board.dto.BoardModifyFormDto;
 import com.enjoy.survey.happyLife.board.dto.BoardRegDto;
+import com.enjoy.survey.happyLife.comment.CommentDao;
 import com.enjoy.survey.happyLife.comment.CommentEntity;
 import com.enjoy.survey.happyLife.comment.CommentService;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
+import com.enjoy.survey.happyLife.file.FileService;
 import com.enjoy.survey.happyLife.user.JWTUsernameCheck;
 import com.enjoy.survey.happyLife.user.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +24,10 @@ import java.util.Objects;
 public class BoardService {
 
     private final BoardDao boardDao;
+    private final FileService fileService;
     private final UserDao userDao;
     private final CommentService commentService;
+    private final CommentDao commentDao;
 
     public HashMap<String, Object> getBoardList(int page, String search, String order) {
         int rPage = (page - 1) * 10;
@@ -59,17 +65,27 @@ public class BoardService {
         }
     }
 
-    public int setBoardReg(BoardRegDto boardFrom, String jwtToken) {
-        // TODO : 게시글 생성시에 파일 등록 부분 처리도 해주어야함
+    public int setBoardReg(BoardRegDto boardFrom, List<MultipartFile> files, String jwtToken) {
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
         int userId = userDao.findByUsername(username).getId();
         boardFrom.setMember_id(userId);
+
+        int boardId = boardDao.getNewBoardId(userId);
+
+        try {
+            for (MultipartFile file : files) {
+                fileService.saveFile(file, boardId);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         return boardDao.setBoardReg(boardFrom);
     }
 
     public int deleteBoard(int boardId) {
-        // TODO : 게시글 삭제 작업시 댓글 삭제 작업 진행해야함
-        //  : 이번엔 게시글 삭제시 delete_state가 변경되도록 되어있으므로 따로 작업하지 않음
+        commentDao.deleteCommentToBoard(boardId);
         return boardDao.deleteBoard(boardId);
     }
 

@@ -31,4 +31,8 @@ public interface CommentDao {
     @Update("update comment set delete_state = true where id = #{cmt_id}")
     int deleteComment(int cmt_id);
 
+    // board에 연관된 댓글 삭제
+    @Update("update comment set delete_state = true where board_id = #{boardId}")
+    int deleteCommentToBoard(int boardId);
+
 }

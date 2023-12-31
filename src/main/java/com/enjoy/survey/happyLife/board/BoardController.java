@@ -8,6 +8,7 @@ import com.enjoy.survey.happyLife.board.dto.BoardRegDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +38,15 @@ public class BoardController {
     @Operation(summary = "board 등록 API", description = "board 등록 API")
     @PostMapping("/user/board/reg")
     public String setBoardReg(
-            @RequestBody BoardFormDto boardFormDto,
-            @RequestHeader(name = "Authorization") String jwtToken) throws Exception {
-        // TODO : 후에 RequestPart 로 변경하여 FormData 로 변경하여 받아야함
-        //  or 따로 API 를 만들어서 file FormData를 받아서 DB 에 저장
+            @RequestPart("title") String title,
+            @RequestPart("content") String content,
+            @RequestPart("file") List<MultipartFile> files,
+            @RequestHeader(value = "Authorization") String jwtToken
+    ) throws Exception {
         BoardRegDto boardRegDto = new BoardRegDto();
-        boardRegDto.setTitle(boardFormDto.getTitle());
-        boardRegDto.setContent(boardFormDto.getContent());
-        int result = boardService.setBoardReg(boardRegDto, jwtToken);
+        boardRegDto.setTitle(title);
+        boardRegDto.setContent(content);
+        int result = boardService.setBoardReg(boardRegDto, files, jwtToken);
         if(result > 0) {
             return "성공적으로 게시물을 등록하였습니다.";
         }else {
