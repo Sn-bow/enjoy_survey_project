@@ -5,8 +5,8 @@ import com.enjoy.survey.happyLife.admin.dto.QnAAnswerDto;
 import com.enjoy.survey.happyLife.inquiry.InquiryEntity;
 import com.enjoy.survey.happyLife.inquiry.dto.InquiryAnswerRegDto;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
-import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.user.UserEntity;
+import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,17 @@ public class AdminController {
     private final AdminService adminService;
 
     // ============== 유저 ====================
+    // TODO : 유저 정보 변경
+    @PostMapping("/admin/modify/user_info")
+    public String userInfoModify(@RequestBody UserSignUpDto userModifyInfo) {
+        int result = adminService.userInfoModify(userModifyInfo);
+        if (result > 0) {
+            return "회원 정보가 정상적으로 변경되었습니다";
+        }else {
+            return "회원 정보 변경을 실패하였습니다.";
+        }
+    }
+
     // TODO : 유저 삭제 (= 비활성화)
     @Operation(summary = "관리자 계정에서 사용자들 계정 비활성화 API", description = "관리자 계정에서 사용자들 계정 비활성화 API")
     @PostMapping("/admin/user/delete")
@@ -129,7 +140,7 @@ public class AdminController {
     // TODO : order 수정
     @Operation(summary = "유저가 작성한 설문 리스트 출력", description = "유저가 작성한 설문 리스트 출력 비활성화 된 설문 포함")
     @GetMapping("/admin/user/survey/list")
-    public List<SurveyEntity> getSurveyListAdminVer(
+    public HashMap<String, Object> getSurveyListAdminVer(
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "userId") int userId,
             @RequestParam(name = "order", defaultValue = "최신 순서") String order,
@@ -143,6 +154,7 @@ public class AdminController {
     @Operation(summary = "유저가 참여한 설문 리스트 출력 ", description = "유저가 참여한 설문 리스트 출력 비활성화 포함")
     @GetMapping("/admin/user/attend/survey/list")
     public HashMap<String, Object> getAttendSurveyListAdminVer(
+            // TODO : @RequestParam(name = "order", defaultValue = "최신 순서") String order
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "userId") int userId,
             @RequestParam(name = "page", defaultValue = "1") int page
@@ -290,13 +302,14 @@ public class AdminController {
     }
 
     // TODO : 설문 디테일 출력 : 마감전, 후 를 나누지 않고 항상 마감 후 를 가정하에 디테일 페이지가 출력되어야함
+    // TODO : 설문 디테일 통계 1, 2 데이터 필요
     @Operation(summary = "설문 디테일 출력", description = "설문 디테일 출력 : 마감전, 후 를 나누지 않고 항상 마감 후 를 가정하에 디테일 페이지가 출력되어야함")
     @GetMapping("/admin/survey/detail")
     public HashMap<String, Object> getSurveyDetailAdminVer(@RequestParam(name = "surveyId") int surveyId) {
       return adminService.getSurveyDetailAdminVer(surveyId);
     }
 
-    // TODO : 설문 삭제 : 설문 삭제 기존  API 활용
+    // TODO : 설문 삭제 admin ver
     @Operation(summary = "설문 삭제", description = "설문 삭제 (해당 설문을 생성한 계정이 비할성화 되어있어도 해당 설문지 삭제(비활성화) 가능 )")
     @PostMapping("/admin/survey/delete")
     public String deleteSurveyAdminVer(@RequestBody Integer surveyId) {
@@ -307,7 +320,7 @@ public class AdminController {
         return "설문 삭제 실패";
     }
 
-    // TODO : 설문 선택 삭제 : 설문 삭제 기존 API 활용
+    // TODO : 설문 선택 삭제 admin ver
     @Operation(summary = "설문 선택 삭제", description = "설문 선택 삭제 (관리자 버전)")
     @PostMapping("/admin/survey/delete/list")
     public String deleteSurveyListAdminVer(@RequestBody List<Integer> surveyIds) {

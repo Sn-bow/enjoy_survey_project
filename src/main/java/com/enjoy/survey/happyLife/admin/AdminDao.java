@@ -88,6 +88,10 @@ public interface AdminDao {
             "ORDER BY ${filter} ${orderBy} LIMIT #{page}, 10")
     List<SurveyEntity> getSurveyListForUserAdminVer(int page, String search, String filter, String orderBy, int userId);
 
+    @Select("select count(id) from survey " +
+            "where survey_content like #{search} and member_id = #{userId}")
+    int getSurveyListCountForUserAdminVer(String search, int userId);
+
     @Select("select " +
             "p.id p_id, p.sq_id, p.member_id, rs.id sur_id, " +
             "rs.topic_id, rs.survey_content, rs.member_id, " +

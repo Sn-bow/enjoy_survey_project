@@ -28,8 +28,8 @@ public interface CommentDao {
     int modifyComment(CommentModifyDto commentModifyDto);
 
     // comment 삭제
-    @Update("update comment set delete_state = true where id = #{cmt_id}")
-    int deleteComment(int cmt_id);
+    @Update("update comment set delete_state = true where id = #{cmt_id} and member_id = #{userId}")
+    int deleteComment(int cmt_id, int userId);
 
     // board에 연관된 댓글 삭제
     @Update("update comment set delete_state = true where board_id = #{boardId}")

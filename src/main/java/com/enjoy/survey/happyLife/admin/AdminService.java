@@ -15,9 +15,12 @@ import com.enjoy.survey.happyLife.survey.SurveyEntity;
 import com.enjoy.survey.happyLife.survey.SurveyService;
 import com.enjoy.survey.happyLife.survey.dto.QuestionCountDto;
 import com.enjoy.survey.happyLife.survey.dto.SurveyDetailDto;
+import com.enjoy.survey.happyLife.user.JWTUsernameCheck;
+import com.enjoy.survey.happyLife.user.UserDao;
 import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.UserService;
 import com.enjoy.survey.happyLife.user.dto.UserAttendSurveyDto;
+import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +39,24 @@ public class AdminService {
     private final QnAService qnAService;
     private final AdminDao adminDao;
     private final SurveyDao surveyDao;
+    private final UserDao userDao;
 
     // ============== 유저 ====================
+    // TODO : User Info Modify
+    public int userInfoModify(UserSignUpDto user) {
+        UserEntity userBeforeInfo = userDao.findByUsername(user.getUsername());
+
+        String email = user.getEmail().isEmpty() ? userBeforeInfo.getEmail() : user.getEmail();
+        String name = user.getName().isEmpty() ? userBeforeInfo.getName() : user.getName();
+        String birth = user.getBirth().isEmpty() ? userBeforeInfo.getBirth() : user.getBirth();
+        String gender = user.getGender().isEmpty() ? userBeforeInfo.getGender() : user.getGender();
+
+        // username = 선택한 사용자 유저 네임
+        int result = userDao.userInfoModify(email, name, birth, gender, user.getUsername());
+        return result;
+    }
+
+
     // TODO : 유저 삭제 (= 비활성화)
     public int deleteUser(int userId) {
         return adminDao.leaveUserAdminVer(userId);
@@ -130,14 +149,22 @@ public class AdminService {
     }
 
     // TODO : 유저가 작성한 설문 리스트 출력
-    public List<SurveyEntity> getSurveyListAdminVer(int page, String search, String order, int userId) {
+    public HashMap<String, Object> getSurveyListAdminVer(int page, String search, String order, int userId) {
         int rPage = (page - 1) * 10;
         String rSearch = "%" + search + "%";
         HashMap<String, String> orderSwitch = new OrderSwitch().switching(order, "설문");
         String filter = orderSwitch.get("filter");
         String orderBy = orderSwitch.get("orderBy");
 
-        return adminDao.getSurveyListForUserAdminVer(page, search, filter, orderBy, userId);
+        // TODO : count 만들어야함
+        int count = adminDao.getSurveyListCountForUserAdminVer(rSearch, userId);
+        List<SurveyEntity> surveyList = adminDao.getSurveyListForUserAdminVer(rPage, rSearch, filter, orderBy, userId);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("surveyList", surveyList);
+        data.put("count", count);
+
+        return data;
     }
 
     // TODO : 유저가 참여한 설문 리스트 출력
@@ -304,6 +331,7 @@ public class AdminService {
         List<QuestionCountDto> questionCountDtoList = surveyDao.getSurveyEndDetail1(surveyId);
 //        surveyDao.getSurveyDetail1(surveyId);
 //        surveyDao.getSurveyDetail1(surveyId);
+        // TODO : 설문 디테일 출력시 통계부분 만들어서 추가해주어야함
         HashMap<String, Object> data = new HashMap<>();
         data.put("surveyDetail", surveyDetailDto);
         data.put("questionCount", questionCountDtoList);

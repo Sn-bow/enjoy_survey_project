@@ -46,5 +46,5 @@ public class SurveyEntity {
     @NotNull(message = "Topic id cannot be null")
     @Schema(description = "설문 알림 상태 : 설문 등록한 사용자가 확인시 자동 변환", defaultValue = "false")
     boolean alarm_state;
-
+    
 }
