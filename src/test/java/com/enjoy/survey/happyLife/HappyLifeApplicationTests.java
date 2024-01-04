@@ -8,6 +8,7 @@ class HappyLifeApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

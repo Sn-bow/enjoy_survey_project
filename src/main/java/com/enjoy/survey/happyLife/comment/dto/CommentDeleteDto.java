@@ -7,5 +7,4 @@ import lombok.Data;
 public class CommentDeleteDto {
 
     int cmt_id;
-
 }

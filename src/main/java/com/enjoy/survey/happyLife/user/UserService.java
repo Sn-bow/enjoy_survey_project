@@ -35,6 +35,19 @@ public class UserService {
         return userDao.signUp(user);
     }
 
+    public int userInfoModify(UserSignUpDto user, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        UserEntity userBeforeInfo = userDao.findByUsername(username);
+
+        String email = user.getEmail().isEmpty() ? userBeforeInfo.getEmail() : user.getEmail();
+        String name = user.getName().isEmpty() ? userBeforeInfo.getName() : user.getName();
+        String birth = user.getBirth().isEmpty() ? userBeforeInfo.getBirth() : user.getBirth();
+        String gender = user.getGender().isEmpty() ? userBeforeInfo.getGender() : user.getGender();
+
+        int result = userDao.userInfoModify(email, name, birth, gender, username);
+        return result;
+    }
+
     public void selectTopic(String username, List<Integer> listSelectTopicId) {
         int userId = userDao.findByUsername(username).getId();
         for (int topic : listSelectTopicId) {

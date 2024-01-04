@@ -29,6 +29,9 @@ public interface UserDao {
     @Insert("insert into user(email, username,name, password, role, birth, gender) values(#{email}, #{username},#{name}, #{password}, #{role}, #{birth}, #{gender})")
     int signUp(UserSignUpDto user);
 
+    @Update("update user set email = #{email}, name = #{name}, birth = #{birth}, gender = #{gender} where username = #{username}")
+    int userInfoModify(String email, String name, String birth, String gender, String username);
+
     @Insert("insert into areas_of_interest(member_id, topic_id) values(#{member_id}, #{topic_id})")
     void saveSelectedTopic(int member_id, int topic_id);
 

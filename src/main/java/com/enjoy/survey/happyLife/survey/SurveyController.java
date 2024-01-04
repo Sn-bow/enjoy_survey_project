@@ -39,7 +39,7 @@ public class SurveyController {
     @Operation(summary = "설문 디테일 페이지", description = "설문 디테일 페이지로 설문 마감 전 페이지에서 필요한 API")
     @GetMapping("/user/survey/detail")
     public HashMap<String, Object> getSurveyDetail(@RequestParam(name = "survey_id") int survey_id) {
-        // TODO : Front 서버 에서 유저 정보를 요청한다음 getSurveyDetail() 에 들어있는 함수중 member_id 와 일치하는 값이 있다면 수정페이지로 전환
+        // TODO : Front 서버 에서 유저 정보를 요청한다음 getSurveyDetail() 에 들어있는 함수중 member_id 와 일치하는 값이 있다면 수정버튼 생성
         // TODO : 또한 설문에 등록한 사진의 경우 또다른 API 를 요청하여 사진 url을 얻어야함
         return surveyService.getSurveyDetail(survey_id);
     }
@@ -55,12 +55,13 @@ public class SurveyController {
     // 설문 등록 API
     @Operation(summary = "설문 등록 API", description = "사용자가 Form 입력시 설문을 등록합니다.")
     @PostMapping(value = "/user/survey/reg", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String setSurvey(@RequestPart("topic_id") int topic_id,
-                            @RequestPart("survey_content") String survey_content,
-                            @RequestPart("end_date") String end_date,
-                            @RequestPart("questions") List<String> questions,
-                            @RequestPart("file") MultipartFile file,
-                            @RequestHeader(value = "Authorization") String jwtToken
+    public String setSurvey(
+            @RequestPart("topic_id") int topic_id,
+            @RequestPart("survey_content") String survey_content,
+            @RequestPart("end_date") String end_date,
+            @RequestPart("questions") List<String> questions,
+            @RequestPart("file") MultipartFile file,
+            @RequestHeader(value = "Authorization") String jwtToken
     ) throws Exception {
 
         // Authentication 에서 user정보를 받는대신 JWT 토큰에서 유저정보 추출로 변경
@@ -81,12 +82,13 @@ public class SurveyController {
         return "complete_save_survey";
     }
 
-    @Operation(summary = "설문 삭제 API", description = "로그인한 사용자가 설문 작성 user_id 와 일치할경우 삭제 가능")
+    @Operation(summary = "설문 삭제 API", description = "로그인한 사용자가 생성한 설문 삭제 API")
     @PostMapping("/user/survey/delete")
-    public String deleteSurvey(@RequestBody SurveyDeleteDto surveyId, @RequestHeader(value = "Authorization") String jwtToken) {
-        // Authentication 에서 user정보를 받는대신 JWT 토큰에서 유저정보 추출로 변경
+    public String deleteSurvey(
+            @RequestBody SurveyDeleteDto surveyId,
+            @RequestHeader(value = "Authorization") String jwtToken
+    ) {
         String username = new JWTUsernameCheck().usernameCheck(jwtToken);
-
         int result = surveyService.deleteSurvey(surveyId, username);
 
         if (result > 0) {

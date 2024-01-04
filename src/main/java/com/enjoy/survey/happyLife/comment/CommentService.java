@@ -6,6 +6,9 @@ import com.enjoy.survey.happyLife.comment.dto.CommentDeleteDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentModifyDto;
 import com.enjoy.survey.happyLife.comment.dto.CommentRegDto;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
+import com.enjoy.survey.happyLife.user.JWTUsernameCheck;
+import com.enjoy.survey.happyLife.user.UserDao;
+import com.enjoy.survey.happyLife.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,7 @@ import java.util.List;
 public class CommentService {
 
     private final CommentDao commentDao;
+    private final UserDao userDao;
 
     public List<CommentEntity> getCommentList(int boardId) {
 
@@ -30,22 +34,34 @@ public class CommentService {
         return commentDao.getCommentList(boardId);
     }
 
-    public int setComment(CommentRegDto commentRegDto) {
-        return commentDao.setComment(commentRegDto);
+    public int setComment(CommentRegDto commentRegDto, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
+        return commentDao.setComment(commentRegDto, userId);
     }
 
-    public int modifyComment(CommentModifyDto commentModifyDto) {
-        return commentDao.modifyComment(commentModifyDto);
+    public int modifyComment(CommentModifyDto commentModifyDto, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
+        String beforeCmtContent = commentDao.getComment(commentModifyDto.getCmtId()).getContent();
+        if(commentModifyDto.getContent().isEmpty() || commentModifyDto.getContent().equals("")) {
+            commentModifyDto.setContent(beforeCmtContent);
+        }
+        return commentDao.modifyComment(commentModifyDto, userId);
     }
 
-    public int deleteComment(CommentDeleteDto commentDeleteDto) {
-        return commentDao.deleteComment(commentDeleteDto.getCmt_id());
+    public int deleteComment(Integer cmtId, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        UserEntity user = userDao.findByUsername(username);
+        return commentDao.deleteComment(cmtId, user.getId());
     }
 
-    public int choiceDeleteComment(CommentChoiceDeleteDto commentChoiceDeleteDto) {
+    public int choiceDeleteComment(List<Integer> cmt_ids, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        UserEntity user = userDao.findByUsername(username);
         int result = 0;
-        for(int cmtId : commentChoiceDeleteDto.getCmt_id()) {
-            result = commentDao.deleteComment(cmtId);
+        for(int cmtId : cmt_ids) {
+            result = commentDao.deleteComment(cmtId, user.getId());
             if(result < 0) {
                 break;
             }
