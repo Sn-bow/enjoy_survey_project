@@ -202,4 +202,10 @@ public interface AdminDao {
     @Update("update survey set delete_state = true where id = #{surveyId}")
     int deleteSurveyAdminVer(int surveyId);
 
+
+    // 댓글
+    @Update("update comment set delete_state = true where id = #{commentId}")
+    int deleteCommentAdminVer(int commentId);
+
+
 }

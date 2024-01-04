@@ -19,15 +19,19 @@ public interface CommentDao {
     @Select("select * from comment where board_id = #{boardId} and delete_state = false")
     List<CommentEntity> getCommentList(int boardId);
 
+    @Select("select * from comment where id = #{cmtId}")
+    CommentEntity getComment(int cmtId);
+
     // comment 등록
-    @Insert("insert into comment(content, board_id, member_id) values(#{content}, #{board_id}, #{member_id})")
-    int setComment(CommentRegDto commentRegDto);
+    @Insert("insert into comment(content, board_id, member_id) values(#{content}, #{board_id}, #{userId})")
+    int setComment(CommentRegDto commentRegDto, int userId);
 
     // comment 수정
-    @Update("update comment set content = #{content} where id = #{cmt_id}")
-    int modifyComment(CommentModifyDto commentModifyDto);
+    @Update("update comment set content = #{content} where id = #{cmtId} and member_id = #{userId}")
+    int modifyComment(CommentModifyDto commentModifyDto, int userId);
 
     // comment 삭제
+    // TODO : 관리자 버전의 댓글 삭제 DAO 부분 만들어두는게 좋을것 같음
     @Update("update comment set delete_state = true where id = #{cmt_id} and member_id = #{userId}")
     int deleteComment(int cmt_id, int userId);
 

@@ -218,6 +218,21 @@ public class AdminService {
         }
     }
 
+    public int deleteCommentAdminVer(int cmtId) {
+        return adminDao.deleteCommentAdminVer(cmtId);
+    }
+
+    public int deleteCommentListAdminVer(List<Integer> cmtIds) {
+        int result = 0;
+        for(int cmtId : cmtIds) {
+            result = adminDao.deleteCommentAdminVer(cmtId);
+            if (result == 0) {
+                break;
+            }
+        }
+        return result;
+    }
+
     // ================== 1대1 문의, QnA =================
 
     public int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto) {

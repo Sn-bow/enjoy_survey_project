@@ -28,8 +28,11 @@ public class CommentController {
 
     @Operation(summary = "댓글 등록 API",description = "댓글 등록 API")
     @PostMapping("/user/comment/reg")
-    public String setComment(@RequestBody CommentRegDto commentRegDto) throws Exception {
-        int result = commentService.setComment(commentRegDto);
+    public String setComment(
+            @RequestBody CommentRegDto commentRegDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception {
+        int result = commentService.setComment(commentRegDto, jwtToken);
         if(result > 0) {
             return "댓글 등록에 성공하셨습니다.";
         }else {
@@ -39,8 +42,12 @@ public class CommentController {
 
     @Operation(summary = "댓글 수정 API",description = "댓글 수정 API")
     @PostMapping("/user/comment/modify")
-    public String modifyComment(@RequestBody CommentModifyDto commentModifyDto) throws Exception {
-        int result = commentService.modifyComment(commentModifyDto);
+    public String modifyComment(
+            @RequestBody CommentModifyDto commentModifyDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception {
+        // 댓글 수정시 본인이 맞는지에 대한 부분 토큰으로 검증
+        int result = commentService.modifyComment(commentModifyDto, jwtToken);
         if(result > 0) {
             return "댓글 수정에 성공하셨습니다.";
         }else {
@@ -50,8 +57,11 @@ public class CommentController {
 
     @Operation(summary = "댓글 삭제 API",description = "작성한 댓글 삭제 API")
     @PostMapping("/user/comment/delete")
-    public String deleteComment(@RequestBody CommentDeleteDto commentDeleteDto, @RequestHeader(name = "Authorization") String jwtToken) throws Exception{
-        int result = commentService.deleteComment(commentDeleteDto, jwtToken);
+    public String deleteComment(
+            @RequestBody Integer cmtId,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception{
+        int result = commentService.deleteComment(cmtId, jwtToken);
         if(result > 0) {
             return "댓글 삭제에 성공하셨습니다.";
         }else {

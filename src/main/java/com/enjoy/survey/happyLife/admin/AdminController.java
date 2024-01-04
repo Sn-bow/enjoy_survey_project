@@ -9,6 +9,8 @@ import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -182,7 +184,33 @@ public class AdminController {
 
     // 게시물 삭제 API 는 기존 API 재활용
 
-    // 댓글 삭제 API 는 기존 API 재활용
+    // TODO : 댓글 삭제 API 구현
+    @Operation(summary = "댓글 삭제 관리자 버전 API", description = "관리자 버전인 댓글 삭제(비활성화) API")
+    @PostMapping("/admin/comment/delete")
+    public ResponseEntity<?> deleteCommentAdminVer(
+            @RequestBody Integer cmtId
+    ) {
+        int result = adminService.deleteCommentAdminVer(cmtId);
+        if(result > 0) {
+            return ResponseEntity.ok("정상적으로 댓글이 삭제되었습니다.");
+        }else {
+            return ResponseEntity.status(400).body("댓글 삭제에 실패하였습니다");
+        }
+    }
+
+    @Operation(summary = "댓글 리스트 삭제 관리자 버전 API", description = "관리자 버전인 댓글 리스트 삭제(비활성화) API")
+    @PostMapping("/admin/comment/list/delete")
+    public ResponseEntity<?> deleteCommentListAdminVer(
+            @RequestBody List<Integer> cmtIds
+    ) {
+        int result = adminService.deleteCommentListAdminVer(cmtIds);
+        if(result > 0) {
+            return ResponseEntity.ok("정상적으로 댓글이 삭제되었습니다.");
+        }else {
+            return ResponseEntity.status(400).body("댓글 삭제에 실패하였습니다");
+        }
+    }
+
 
     // ================== 1대1 문의, QnA =================
 

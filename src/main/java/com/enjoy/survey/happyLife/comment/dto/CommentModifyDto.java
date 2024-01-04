@@ -6,5 +6,5 @@ import lombok.Data;
 public class CommentModifyDto {
 
     String content;
-    int cmt_id;
+    int cmtId;
 }
