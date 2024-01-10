@@ -7,6 +7,7 @@ import com.enjoy.survey.happyLife.board.dto.BoardModifyFormDto;
 import com.enjoy.survey.happyLife.board.dto.BoardRegDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,10 +38,10 @@ public class BoardController {
 
     @Operation(summary = "board 등록 API", description = "board 등록 API")
     @PostMapping("/user/board/reg")
-    public String setBoardReg(
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart("file") List<MultipartFile> files,
+    public ResponseEntity<?> setBoardReg(
+            @RequestPart(name = "title", required = true) String title,
+            @RequestPart(name = "content", required = true) String content,
+            @RequestPart(name = "file", required = false) List<MultipartFile> files,
             @RequestHeader(value = "Authorization") String jwtToken
     ) throws Exception {
         BoardRegDto boardRegDto = new BoardRegDto();
@@ -48,12 +49,14 @@ public class BoardController {
         boardRegDto.setContent(content);
         int result = boardService.setBoardReg(boardRegDto, files, jwtToken);
         if(result > 0) {
-            return "성공적으로 게시물을 등록하였습니다.";
+            return ResponseEntity.ok("성공적으로 게시물을 등록하였습니다.");
         }else {
-            throw new Exception("게시물을 등록하지 못하였습니다.");
+            return ResponseEntity.status(400).body("게시글 등록에 실패하였습니다.");
         }
     }
 
+    // TODO : 게시글 수정시에 등록되어있는 파일을 삭제할 수있는 API를 만들어야함
+    // TODO : 게시글 수정시에 다시 파일을 등록할 수있는 코드를 추가하여야함
     @Operation(summary = "board 수정 API", description = "board 수정 API")
     @PostMapping("/user/board/modify")
     public String modifyBoard(
@@ -69,8 +72,11 @@ public class BoardController {
 
     @Operation(summary = "board 삭제 API", description = "board 삭제 API")
     @PostMapping("/user/board/delete")
-    public String deleteBoard(@RequestParam(name = "boardId") int boardId) throws Exception {
-        int result = boardService.deleteBoard(boardId);
+    public String deleteBoard(
+            @RequestBody Integer boardId,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception {
+        int result = boardService.deleteBoard(boardId, jwtToken);
         if (result > 0) {
             return "성공적으로 삭제에 성공하셨습니다.";
         }else {
@@ -80,8 +86,11 @@ public class BoardController {
 
     @Operation(summary = "board 선택 삭제 API", description = "board 선택 삭제 API")
     @PostMapping("/user/board/deleteList")
-    public String choiceDeleteBoard(@RequestBody BoardDeleteDto boardDeleteDto) throws Exception {
-        int result = boardService.choiceDeleteBoard(boardDeleteDto.getBoardIds());
+    public String choiceDeleteBoard(
+            @RequestBody BoardDeleteDto boardDeleteDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception {
+        int result = boardService.choiceDeleteBoard(boardDeleteDto.getBoardIds(), jwtToken);
         if(result > 0) {
             return "성공적으로 게시글들을 삭제 하였습니다.";
         }else {

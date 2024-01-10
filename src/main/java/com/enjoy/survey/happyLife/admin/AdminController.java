@@ -2,6 +2,7 @@ package com.enjoy.survey.happyLife.admin;
 
 
 import com.enjoy.survey.happyLife.admin.dto.QnAAnswerDto;
+import com.enjoy.survey.happyLife.board.dto.BoardDeleteDto;
 import com.enjoy.survey.happyLife.inquiry.InquiryEntity;
 import com.enjoy.survey.happyLife.inquiry.dto.InquiryAnswerRegDto;
 import com.enjoy.survey.happyLife.qna.QnAEntity;
@@ -99,7 +100,7 @@ public class AdminController {
 
     // TODO : 유저가 작성한 게시물 리스트 출력 | where delete_state = false 조건 걸지않고
     // TODO : order 수정
-    @Operation(summary = "유저가 작성한 게시물 리스트 출력", description = "비활서오하 된 게시물도 보이게됨")
+    @Operation(summary = "유저가 작성한 게시물 리스트 출력", description = "비활성화 된 게시물도 보이게됨")
     @GetMapping("/admin/user/board/list")
     public HashMap<String, Object> getBoardListAdminVer(
             @RequestParam(name = "page", defaultValue = "1") int page,
@@ -178,11 +179,47 @@ public class AdminController {
 
     @Operation(summary = "관리자 페이지 게시물 디테일 출력 (비활성화된 게시물도 출력)", description = "관리자 페이지 게시물 디테일 출력 (비활성화된 게시물도 출력)")
     @GetMapping("/admin/board/detail") // 삭제(=비활성화) 된 게시물도 출력
-    public HashMap<String, Object> getBoardDetailAdminVer(@RequestParam(name = "boardId") int boardId) throws Exception {
-        return adminService.getBoardDetailAdminVer(boardId);
+    public ResponseEntity<?> getBoardDetailAdminVer(
+            @RequestParam(name = "boardId") int boardId
+    ) throws Exception {
+        HashMap<String, Object> boardDetail = adminService.getBoardDetailAdminVer(boardId);
+        if (boardDetail.isEmpty()) {
+            HashMap<String, String> error = new HashMap<>();
+            error.put("err_message", "올바른 boardId 가 아닙니다.");
+            return ResponseEntity.status(400).body(error);
+        }else {
+            return ResponseEntity.ok(boardDetail);
+        }
     }
 
+
     // 게시물 삭제 API 는 기존 API 재활용
+    @Operation(summary = "board 삭제 관리자 버전 API", description = "board 삭제 관리자 버전 API")
+    @PostMapping("/admin/board/delete")
+    public ResponseEntity<?> deleteBoard(
+            @RequestBody Integer boardId
+    ) {
+        int result = adminService.deleteBoardAdminVer(boardId);
+        if (result > 0) {
+            return ResponseEntity.ok("성공적으로 삭제에 성공하셨습니다.");
+        }else {
+            return ResponseEntity.status(400).body("삭제에 실패하셨습니다.");
+        }
+    }
+
+    @Operation(summary = "board 선택 삭제 관리자 버전 API", description = "board 선택 삭제 관리자 버전 API")
+    @PostMapping("/admin/board/deleteList")
+    public ResponseEntity<?> choiceDeleteBoard(
+            @RequestBody BoardDeleteDto boardDeleteDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) {
+        int result = adminService.choiceDeleteBoardAdminVer(boardDeleteDto.getBoardIds());
+        if(result > 0) {
+            return ResponseEntity.ok("성공적으로 게시글들을 삭제 하였습니다.");
+        }else {
+            return ResponseEntity.status(400).body("게시글들을 삭제하는데 문제가 발생했습니다.");
+        }
+    }
 
     // TODO : 댓글 삭제 API 구현
     @Operation(summary = "댓글 삭제 관리자 버전 API", description = "관리자 버전인 댓글 삭제(비활성화) API")

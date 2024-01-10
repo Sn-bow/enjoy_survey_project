@@ -65,6 +65,7 @@ public interface AdminDao {
     // TODO : comment List 출력시에 페이징 처리를 해야할것 같음
     @Select("select * from comment " +
             "where member_id = #{userId} and content like #{search} " +
+            "order by id desc " +
             "limit #{page} and 10")
     List<CommentEntity> getCommentListForUserAdminVer(int userId, String search ,int page);
 
@@ -207,5 +208,8 @@ public interface AdminDao {
     @Update("update comment set delete_state = true where id = #{commentId}")
     int deleteCommentAdminVer(int commentId);
 
+
+    @Update("update board set delete_state = true where id = #{boardId}")
+    int deleteBoardAdminVer(int boardId);
 
 }

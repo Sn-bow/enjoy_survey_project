@@ -54,6 +54,7 @@ public class BoardService {
         //  : 그러므로 이후 comment List 출력부분 생성후 코드 수정 필요
         BoardEntity board = boardDao.getBoardDetail(boardId);
         List<CommentEntity> commentList = commentService.getCommentList(boardId);
+
         HashMap<String, Object> boardDetailAndComments = new HashMap<>();
         boardDetailAndComments.put("boardDetail", board);
         boardDetailAndComments.put("commentList", commentList);
@@ -84,15 +85,23 @@ public class BoardService {
         return boardDao.setBoardReg(boardFrom);
     }
 
-    public int deleteBoard(int boardId) {
+    public int deleteBoard(int boardId, String jwtToken) {
         commentDao.deleteCommentToBoard(boardId);
-        return boardDao.deleteBoard(boardId);
+
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
+
+        return boardDao.deleteBoard(boardId, userId);
     }
 
-    public int choiceDeleteBoard(List<Integer> boardIds) {
+    public int choiceDeleteBoard(List<Integer> boardIds, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
+
         int result = 0;
+
         for (int boardId : boardIds) {
-            result = boardDao.deleteBoard(boardId);
+            result = boardDao.deleteBoard(boardId, userId);
             if(result == 0) {
                 break;
             }

@@ -4,10 +4,7 @@ package com.enjoy.survey.happyLife.comment;
 import com.enjoy.survey.happyLife.comment.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,13 +14,6 @@ public class CommentController {
 
 
     private final CommentService commentService;
-
-    @Operation(summary = "댓글 리스트 출력 API",description = "댓글 리스트 출력 API")
-    @PostMapping("/user/comment/list")
-    public List<CommentEntity> getCommentList(@RequestBody CommentListDto commentListDto) {
-        // TODO : comment List 출력시에 페이징 처리를 해야할것 같음
-        return commentService.getCommentList(commentListDto.getBoardId());
-    }
 
 
     @Operation(summary = "댓글 등록 API",description = "댓글 등록 API")

@@ -206,7 +206,7 @@ public class AdminService {
     public HashMap<String, Object> getBoardDetailAdminVer(int boardId) throws Exception {
         // 삭제(=비활성화) 된 게시물도 보이게됨
         BoardEntity board = adminDao.getBoardDetailAdminVer(boardId);
-        // TODO : OrderSwitch Class 사용해서 검색 기능 구현
+        // TODO : 댓글 페이징 처리 부분 필요
         List<CommentEntity> commentList = adminDao.getCommentListAdminVer(boardId);
         HashMap<String, Object> boardDetailAndComments = new HashMap<>();
         boardDetailAndComments.put("boardDetail", board);
@@ -216,6 +216,21 @@ public class AdminService {
         }else {
             throw new Exception("board가 존재하지 않습니다.");
         }
+    }
+
+    public int deleteBoardAdminVer(int boardId) {
+        return adminDao.deleteBoardAdminVer(boardId);
+    }
+
+    public int choiceDeleteBoardAdminVer(List<Integer> boardIds) {
+        int result = 0;
+        for (int boardId : boardIds) {
+            result = adminDao.deleteBoardAdminVer(boardId);
+            if(result == 0){
+                break;
+            }
+        }
+        return result;
     }
 
     public int deleteCommentAdminVer(int cmtId) {

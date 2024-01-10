@@ -34,8 +34,8 @@ public interface BoardDao {
     @Insert("insert into board(title, content, member_id) values(#{title}, #{content}, #{member_id})")
     int setBoardReg(BoardRegDto boardRegDto);
 
-    @Update("update board set delete_state = true where id = #{boardId}")
-    int deleteBoard(int boardId);
+    @Update("update board set delete_state = true where id = #{boardId} and member_id = #{userId}")
+    int deleteBoard(int boardId, int userId);
 
     @Update("update board set title = #{title}, content = #{content}, modify_date = now() where id = #{id} and member_id = #{userId}")
     int modifyBoard(@Param("title") String title, @Param("content") String content, @Param("id") int boardId, @Param("userId") int userId);
