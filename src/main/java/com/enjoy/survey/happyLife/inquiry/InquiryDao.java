@@ -18,11 +18,11 @@ public interface InquiryDao {
     @Select("select * from one_to_one_inquiry where member_id = #{userId} and delete_state = false")
     List<InquiryEntity> getInquiryList(int userId);
 
-    @Select("select * from one_to_one_inquiry where id = #{inquiry_id}")
+    @Select("select * from one_to_one_inquiry where id = #{inquiry_id} and delete_state = false")
     InquiryEntity getInquiry(int inquiry_id);
 
-    @Insert("insert into one_to_one_inquiry(question, member_id) values(#{question}, #{user_id})")
-    int setInquiryQuestion(InquiryQuestionRegDto inquiryQuestionRegDto);
+    @Insert("insert into one_to_one_inquiry(question, member_id) values(#{question}, #{userId})")
+    int setInquiryQuestion(String question, int userId);
 
     @Update("update one_to_one_inquiry set answer = #{answer} where id = #{inquiry_id}")
     int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto);

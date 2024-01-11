@@ -140,6 +140,9 @@ public interface AdminDao {
             "where title like #{search}")
     int getInquiryAllListCountAdminVer(String search);
 
+    @Select("select * from one_to_one_inquiry where id = #{inquiryId}")
+    InquiryEntity getInquiryAdminVer(int inquiryId);
+
     @Update("update one_to_one_inquiry set answer = #{answer} where id = #{inquiry_id}")
     int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto);
 

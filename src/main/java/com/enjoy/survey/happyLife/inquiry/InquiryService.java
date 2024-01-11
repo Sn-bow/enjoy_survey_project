@@ -38,8 +38,10 @@ public class InquiryService {
         return inquiryDao.getInquiry(inquiryId);
     }
 
-    public int setInquiryQuestion(InquiryQuestionRegDto inquiryQuestionRegDto) {
-        return inquiryDao.setInquiryQuestion(inquiryQuestionRegDto);
+    public int setInquiryQuestion(String question, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.getUserSimpleInfo(username).getId();
+        return inquiryDao.setInquiryQuestion(question, userId);
     }
 
     public int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto) {
@@ -50,7 +52,8 @@ public class InquiryService {
     public int deleteInquiry(int inquiryId) {
         InquiryEntity inquiry = inquiryDao.getInquiry(inquiryId);
         int result = 0;
-        if(inquiry.getAnswer() != null) {
+        // 작성된 inquiry 가 답변 부분은 존재하지 않을때 해당 1대1문의 삭제 가능 하도록 설정
+        if(inquiry.getAnswer() == null) {
             result = inquiryDao.deleteInquiry(inquiryId);
         }
         return result;

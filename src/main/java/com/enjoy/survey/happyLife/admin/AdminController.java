@@ -275,7 +275,19 @@ public class AdminController {
         return adminService.getInquiryListAdminVer(search, page, order);
     }
 
-//    // TODO : 1대1 문의 디테일 출력 : 기존 API로 대체 getInquiry();
+//    // TODO : 1대1 문의 디테일 출력 만들어야 함
+    @Operation(summary = "1대1 문의 단일 출력", description = "1대1 문의 단일 출력 API (비활성화 된 문의 포함)")
+    @GetMapping("/admin/inquiry")
+    public ResponseEntity<?> getInquiryAdminVer(
+            @RequestParam(name = "inquiryId") Integer inquiryId
+    ) {
+        InquiryEntity inquiry = adminService.getInquiryAdminVer(inquiryId);
+        if(inquiry != null) {
+            return ResponseEntity.ok(inquiry);
+        }else {
+            return ResponseEntity.status(400).body("inquiryId가 존재하지 않습니다.");
+        }
+    }
 
     // TODO : 전체 QnA 리스트 출력
     @Operation(summary = "전체 QnA 리스트 출력", description = "전체 QnA 리스트 출력 비활성화 포함")
