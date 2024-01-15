@@ -1,5 +1,6 @@
 package com.enjoy.survey.happyLife.qna;
 
+import com.auth0.jwt.JWT;
 import com.enjoy.survey.happyLife.common.OrderSwitch;
 import com.enjoy.survey.happyLife.qna.dto.QnAQuestionModifyDto;
 import com.enjoy.survey.happyLife.qna.dto.QnAQuestionRegDto;
@@ -44,20 +45,24 @@ public class QnAService {
         return 0;
     }
 
-    public int modifyQnAQuestion(QnAQuestionModifyDto qnAQuestionModifyDto) {
+    public int modifyQnAQuestion(QnAQuestionModifyDto qnAQuestionModifyDto, String jwtToken) {
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
         String answer = qnADao.divisionAnswer(qnAQuestionModifyDto.getQnaId());
         if (answer != null) {
-            return qnADao.modifyQnA(qnAQuestionModifyDto);
+            return qnADao.modifyQnA(qnAQuestionModifyDto, userId);
         }else {
             return 0;
         }
     }
 
-    public int deleteQnA(int qnaId) {
+    public int deleteQnA(int qnaId, String jwtToken) {
         String answer = qnADao.divisionAnswer(qnaId);
+        String username = new JWTUsernameCheck().usernameCheck(jwtToken);
+        int userId = userDao.findByUsername(username).getId();
 
         if (answer != null) {
-            return qnADao.deleteQnA(qnaId);
+            return qnADao.deleteQnA(qnaId, userId);
         }else {
             return 0;
         }

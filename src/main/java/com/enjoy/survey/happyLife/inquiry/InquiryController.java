@@ -30,8 +30,11 @@ public class InquiryController {
 
     @Operation(summary = "1대1 질문 등록", description = "일반 유저의 1대1 질문 등록 API")
     @PostMapping("/user/inquiry/question")
-    public String setInquiryQuestion(@RequestBody InquiryQuestionRegDto inquiryQuestionRegDto) throws Exception {
-        int result = inquiryService.setInquiryQuestion(inquiryQuestionRegDto);
+    public String setInquiryQuestion(
+            @RequestBody String question,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) throws Exception {
+        int result = inquiryService.setInquiryQuestion(question, jwtToken);
         if (result > 0) {
             return "1대1 문의를 등록하셨습니다";
         } else {
@@ -44,7 +47,7 @@ public class InquiryController {
     // TODO : 1 대 1 문의 삭제 API 작성 필요 : delete_state 활용
     @Operation(summary = "1 대 1 문의 삭제 API", description = "1 대 1 문의 삭제 API answer가 존재시에는 삭제 불가능 (admin 만 삭제 가능)")
     @PostMapping("/user/inquiry/delete")
-    public String deleteInquiry(@RequestParam(name = "inquiryId") int inquiryId) {
+    public String deleteInquiry(@RequestBody Integer inquiryId) {
         int result = inquiryService.deleteInquiry(inquiryId);
         if(result > 0) {
             return "1대1 문의 삭제가 정상적으로 완료되었습니다.";

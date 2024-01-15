@@ -140,11 +140,14 @@ public interface AdminDao {
             "where title like #{search}")
     int getInquiryAllListCountAdminVer(String search);
 
+    @Select("select * from one_to_one_inquiry where id = #{inquiryId}")
+    InquiryEntity getInquiryAdminVer(int inquiryId);
+
     @Update("update one_to_one_inquiry set answer = #{answer} where id = #{inquiry_id}")
     int setInquiryAnswer(InquiryAnswerRegDto inquiryAnswerRegDto);
 
     // TODO: QnA에서도 페이징이 필요함
-    @Select("select * from question_and_answer where title like #{search} order by ${filter} ${orderBy} limit #{page}, 10")
+    @Select("select * from question_and_answer where question like #{search} order by ${filter} ${orderBy} limit #{page}, 10")
     List<QnAEntity> getQnAAllListAdminVer(String search, String filter, String orderBy, int page);
 
     @Select("select coount(*) from question_and_answer where title like #{search}")
@@ -212,4 +215,10 @@ public interface AdminDao {
     @Update("update board set delete_state = true where id = #{boardId}")
     int deleteBoardAdminVer(int boardId);
 
+    @Update("update question_and_answer set delete_state = true where id = #{qnaId}")
+    int deleteQnAAdminVer(int qnaId);
+
+
+    @Select("select * from question_and_answer where id = #{qnaId}")
+    QnAEntity getQnAAdminVer(int qnaId);
 }

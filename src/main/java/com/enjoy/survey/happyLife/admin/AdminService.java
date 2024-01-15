@@ -276,6 +276,10 @@ public class AdminService {
         return data;
     }
 
+    public InquiryEntity getInquiryAdminVer(int inquiryId) {
+        return adminDao.getInquiryAdminVer(inquiryId);
+    }
+
     // TODO : 전체 QnA 리스트 출력
     public HashMap<String, Object> getQnAListAdminVer(String search, String order, int page) {
         String rSearch = "%" + search + "%";
@@ -314,14 +318,14 @@ public class AdminService {
 
     // TODO : QnA 삭제
     public int deleteQnAAdnminVer(int qnaId) {
-        return qnAService.deleteQnA(qnaId);
+        return adminDao.deleteQnAAdminVer(qnaId);
     }
 
     // TODO : QnA 선택 삭제
     public int deleteQnAListAdminVer(List<Integer> qnaIds) {
         int result = 0;
         for (int qnaId : qnaIds) {
-            result = qnAService.deleteQnA(qnaId);
+            result = adminDao.deleteQnAAdminVer(qnaId);
             if (result == 0) {
                 break;
             }
@@ -386,4 +390,7 @@ public class AdminService {
         return result;
     }
 
+    public QnAEntity getQnAAdminVer(int qnaId) {
+        return adminDao.getQnAAdminVer(qnaId);
+    }
 }
