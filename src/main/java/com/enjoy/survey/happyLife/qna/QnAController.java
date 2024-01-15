@@ -16,21 +16,24 @@ public class QnAController {
     private final QnAService qnAService;
 
     @Operation(summary = "QnA list 출력 API", description = "QnA list 출력 API")
-    @PostMapping("/qna/list")
+    @GetMapping("/qna/list")
     public List<QnAEntity> getQnAList() {
         // TODO: QnA에서도 페이징이 필요함
         return qnAService.getQnAList();
     }
 
     @Operation(summary = "QnA detail 출력 API", description = "QnA detail 출력 API")
-    @PostMapping("/qna/detail")
+    @GetMapping("/qna/detail")
     public QnAEntity getQnA(@RequestParam(name = "qnaId") int qnaId) {
         return qnAService.getQnA(qnaId);
     }
 
     @Operation(summary = "QnA question 등록 API", description = "QnA question 등록 API")
     @PostMapping("/user/qna/question")
-    public String setQnAQuestion(@RequestBody QnAQuestionRegDto qnAQuestionRegDto, @RequestHeader(name = "Authorization") String jwtToken) {
+    public String setQnAQuestion(
+            @RequestBody QnAQuestionRegDto qnAQuestionRegDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) {
         int result = qnAService.setQnAQuestion(qnAQuestionRegDto, jwtToken);
         if (result > 0) {
             return "QnA등록을 성공적으로 마치셨습니다.";
@@ -41,8 +44,11 @@ public class QnAController {
 
     @Operation(summary = "QnA 삭제 API", description = "QnA 삭제 API")
     @PostMapping("/user/qna/question/delete")
-    public String setQnADelete(@RequestParam(name = "qnaId") int qnaId) {
-        int result = qnAService.deleteQnA(qnaId);
+    public String setQnADelete(
+            @RequestBody Integer qnaId,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) {
+        int result = qnAService.deleteQnA(qnaId, jwtToken);
         if (result > 0) {
             return "QnA의 삭제가 완료 되었습니다.";
         }else {
@@ -53,8 +59,11 @@ public class QnAController {
     // TODO : question 부분 answer가 존재하지 않을때 수정할 수 있어야함
     @Operation(summary = "QnA 수정 API", description = "QnA 중 Answer 이 없을경우 수정을 할 수 있는 API")
     @PostMapping("/user/qna/question/modify")
-    public String modifyQnAQuestion(@RequestBody QnAQuestionModifyDto qnAQuestionModifyDto) {
-        int result = qnAService.modifyQnAQuestion(qnAQuestionModifyDto);
+    public String modifyQnAQuestion(
+            @RequestBody QnAQuestionModifyDto qnAQuestionModifyDto,
+            @RequestHeader(name = "Authorization") String jwtToken
+    ) {
+        int result = qnAService.modifyQnAQuestion(qnAQuestionModifyDto, jwtToken);
         if (result > 0) {
             return "QnA 의 질문 부분의 수정이 완료되었습니다.";
         }else {

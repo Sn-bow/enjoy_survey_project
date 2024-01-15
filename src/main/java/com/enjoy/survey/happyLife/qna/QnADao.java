@@ -16,7 +16,7 @@ public interface QnADao {
     @Select("select * from question_and_answer where delete_state = false")
     List<QnAEntity> getQnAList();
 
-    @Select("select * from question_and_answer where id = #{qnaId}")
+    @Select("select * from question_and_answer where id = #{qnaId} and delete_state = false")
     QnAEntity getQnA(int qnaId);
 
     @Select("select answer from question_and_answer where id = #{qnaId}")
@@ -25,11 +25,11 @@ public interface QnADao {
     @Insert("insert into question_and_answer(question, member_id) values(#{question}, #{userId})")
     int setQnAQuestion(String question, int userId);
 
-    @Update("update question_and_answer set question = #{question} where id = #{qnaId}")
-    int modifyQnA(QnAQuestionModifyDto qnAQuestionModifyDto);
+    @Update("update question_and_answer set question = #{question} where id = #{qnaId} and member_id = #{userId}")
+    int modifyQnA(QnAQuestionModifyDto qnAQuestionModifyDto, int userId);
 
-    @Update("update question_and_answer set delete_state = true where id = #{qnaId}")
-    int deleteQnA(int qnaId);
+    @Update("update question_and_answer set delete_state = true where id = #{qnaId} and member_id = #{userId}")
+    int deleteQnA(int qnaId, int userId);
 
     //TODO : answer 의 경우 admin 다오에서 접근
 

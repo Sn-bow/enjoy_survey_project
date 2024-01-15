@@ -318,14 +318,14 @@ public class AdminService {
 
     // TODO : QnA 삭제
     public int deleteQnAAdnminVer(int qnaId) {
-        return qnAService.deleteQnA(qnaId);
+        return adminDao.deleteQnAAdminVer(qnaId);
     }
 
     // TODO : QnA 선택 삭제
     public int deleteQnAListAdminVer(List<Integer> qnaIds) {
         int result = 0;
         for (int qnaId : qnaIds) {
-            result = qnAService.deleteQnA(qnaId);
+            result = adminDao.deleteQnAAdminVer(qnaId);
             if (result == 0) {
                 break;
             }
@@ -390,4 +390,7 @@ public class AdminService {
         return result;
     }
 
+    public QnAEntity getQnAAdminVer(int qnaId) {
+        return adminDao.getQnAAdminVer(qnaId);
+    }
 }

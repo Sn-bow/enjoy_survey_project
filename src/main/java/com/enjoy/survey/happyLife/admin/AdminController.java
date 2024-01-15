@@ -300,7 +300,12 @@ public class AdminController {
         return adminService.getQnAListAdminVer(search, order, page);
     }
 
-    // TODO : QnA 디테일 출력 : 기존 API로 대체 getQnA();
+    // TODO : QnA 디테일 출력
+    @Operation(summary = "QnA detail 출력 API 관리자 버전", description = "QnA detail 출력 API 관리자 버전")
+    @GetMapping("/admin/qna/detail")
+    public QnAEntity getQnAAdminVer(@RequestParam(name = "qnaId") int qnaId) {
+        return adminService.getQnAAdminVer(qnaId);
+    }
 
     // TODO : 1대1 문의 삭제
     @Operation(summary = "1대1 문의 삭제(비활성화)", description = "1대1 문의 삭제 answer 가 존재해도 삭제 가능")
