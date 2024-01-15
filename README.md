@@ -58,9 +58,9 @@
 
 <br/>
 
-# API (진행중)
+# API ( 24.01.02 -> 24.01.15(update) 진행중 )
 
-# 관리자
+# **관리자**
 
 ## 설문
 
@@ -655,6 +655,195 @@
 
 ## 게시판
 
+---
+
+- `**[DELETE | POST]` 게시글 삭제 (관리자)**
+    
+    
+    | Description | 게시글 삭제 (= 비활성화) 관리자 버전 API ( 모든 게시글 삭제 가능 ) |
+    | --- | --- |
+    | URL | /admin/board/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | boardId | Integer | Yes | 게시글 아이디(pk) |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[DELETE | POST]` 게시글 리스트 삭제 (관리자)**
+    
+    
+    | Description | 게시글 다수 선택 삭제 (= 비활성화) 관리자 버전 API ( 모든 게시글 삭제 가능 ) |
+    | --- | --- |
+    | URL | /admin/board/deleteList |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | boardIds | List<Integer> | Yes | 게시글 아이디(pk) 배열 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 게시판 디테일 (관리자)**
+    
+    
+    | Description | 삭제(비활성화) 된 게시물을 포함하여 게시물의 디테일 데이터 API |
+    | --- | --- |
+    | URL | /admin/board/detail |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | boardId | Integer | yes | 게시물 ID (PK) |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 선택한 유저가 작성한 게시물 리스트 (관리자)**
+    
+    
+    | Description | 비활성화 된 유저가 작성한 게시물 및 비활성화 된 게시물들을 포함한 게시물 리스트 데이터 API |
+    | --- | --- |
+    | URL | /admin/user/board/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | search | String | no | 게시글 ‘내용’ 검색 내용 | "” |
+    | order | String | no | 게시글 리스트 order | 최신 순서 |
+    | userId | Integer | Yes | 게시글 작성한 유저 ID(PK) |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 게시판 리스트 (관리자)**
+    
+    
+    | Description | 비활성화 되어있는 게시글을 포함한 게시글 리스트 데이터 API |
+    | --- | --- |
+    | URL | /admin/board/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    |  |  |  |  |  |
+    | url params |  |  |  |  |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | search | String | no | 게시글 ‘내용’ 검색어 | "” |
+    | order | String | no | 게시글 리스트 오더 | 최신 순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
 ## 댓글
 
 ---
@@ -735,11 +924,381 @@
 
 ---
 
-## 파일
+- `**[GET]` 작성한 댓글 리스트 (관리자)**
+    
+    
+    | Description | 관리자가 선택한 유저 정보 API |
+    | --- | --- |
+    | URL | /admin/user/comment/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | search | String | No | 댓글 내용 검색 | “” |
+    | page | Integer | No | 출력할 페이지 : 페이지당 10개 출력 | 1 |
+    | userId | Integer | Yes | 선택한 유저 아이디(pk) |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
 
 ## 1대1 문의
 
+---
+
+- `**[DELETE | POST]` 1대1 문의 삭제 (관리자)**
+    
+    
+    | Description | 1대1 문의에서 관리자의 답변이 존재하는 경우에도 삭제가 가능한, 1대1 문의 삭제(비활성화) API |
+    | --- | --- |
+    | URL | /admin/inquiry/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | inquiryId | Integer | yes | 삭제할 1대1 문의 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[POST]` 1대1 문의 Answer 생성 (관리자)**
+    
+    
+    | Description | 1대1 문의 답변 생성 API (질문이 존재하는 1대1문의 행의 답변 컬럼 부분 업데이트하는 형식) |
+    | --- | --- |
+    | URL | /admin/inquiry/answer |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | answer | String | yes | 1대1 문의 답변 |  |
+    | inquiry_id | Integer | yes | 1대1 문의 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 1대1 문의 디테일 (관리자)**
+    
+    
+    | Description | 삭제(비활성화)된 1대1 문의를 포함한 데이터 추력 API |
+    | --- | --- |
+    | URL | /admin/inquiry |
+    | Auth Required | yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | inquiryId | Integer | yes | 1대1문의 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 1대1 문의 리스트 (관리자)**
+    
+    
+    | Description | 전체 1대1 문의 리스트 출력 API (비활성화 되어있는 리스트 포함) |
+    | --- | --- |
+    | URL | /admin/inquiry/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | search | String | no | 문의 “질문” 검색어 | “” |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | order | String | no | 리스트 오더 필터링 | 최신 순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
 ## QnA
+
+---
+
+- `**[DELETE | POST]` QnA 삭제 (관리자)**
+    
+    
+    | Description | QnA 의 답변이 존재하여도 삭제(비활성화) 가능한 관리자 API |
+    | --- | --- |
+    | URL | /admin/qna/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | qnaId | Integer | yes | 삭제할 QnA ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[DELETE | POST]` QnA 선택 삭제 (관리자)**
+    
+    
+    | Description | QnA 의 답변이 존재하여도 선택 삭제(비활성화) 가능한 관리자 API |
+    | --- | --- |
+    | URL | /admin/qna/list/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | qnaIds | List<Integer> | yes | 삭제할 QnA ID 배열 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` QnA 디테일 (관리자)**
+    
+    
+    | Description | QnA 비활성화 되어있는 내용 포함 디테일 출력 API |
+    | --- | --- |
+    | URL | /admin/qna/detail |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | qnaId | Integer | Yes | QnA 디테일 출력할 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` QnA 리스트 (관리자)**
+    
+    
+    | Description | QnA 전체 삭제(비활성화) 포함 리스트 출력 API |
+    | --- | --- |
+    | URL | /admin/qna/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | search | String | no | question 검색 내용 | “” |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | order | String | no | 페이지 order | 최신순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[POST]` QnA Answer 생성 (관리자)**
+    
+    
+    | Description | QnA 의 답변 생성 API |
+    | --- | --- |
+    | URL | /admin/qna/answer |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | qnaId | Integer | Yes | 답변 생성할 QnA ID |  |
+    | answer | String | Yes | 답변 내용 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
 
 # 일반 회원
 
@@ -1408,6 +1967,268 @@
 
 ## 게시판
 
+---
+
+- `**[DELETE | POST]` 게시글 리스트 삭제 (일반 회원)**
+    
+    
+    | Description | 로그인한 유저가 생성한 게시글을 선택하여 다수를 삭제하기 위한 API |
+    | --- | --- |
+    | URL | /user/board/deleteList |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | boardIds | List<Integer> | Yes | 삭제할 게시글 ID 선택 배열 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[DELETE | POST]` 게시글 삭제 (일반 회원)**
+    
+    
+    | Description | 로그인한 유저가 생성한 게시글을 삭제하기 위한 API |
+    | --- | --- |
+    | URL | /user/board/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | boardId | Integer | Yes | 삭제할 게시물 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 게시판 디테일 (일반 회원)**
+    
+    
+    | Description | 게시물의 디테일 데이터 API |
+    | --- | --- |
+    | URL | /user/board/detail |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | boardId | Integer | yes | 게시물 ID (PK) |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 로그인한 유저가 작성한 게시물 리스트 (일반 회원)**
+    
+    
+    | Description | 로그인한 유저가 작성한 게시물 리스트 데이터 API |
+    | --- | --- |
+    | URL | /user/board/list/forUser |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | page | Integer | no | page 번호 | 1 |
+    | search | String | no | 게시물 ‘내용’ 검색 내용 | "” |
+    | order | String | no | 게시물 리스트 order | 최신 순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 게시판 리스트 (일반 회원)**
+    
+    
+    | Description | 게시글 리스트 데이터 API |
+    | --- | --- |
+    | URL | /board/list |
+    | Auth Required | no |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | search | String | no | 게시글 ‘내용’ 검색어 | "” |
+    | order | String | no | 게시글 리스트 오더 | 최신 순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[MODIFY | POST]` 게시글 수정 (일반 회원)**
+    
+    
+    | Description | 게시글 수정 API |
+    | --- | --- |
+    | URL | /user/board/modify |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | id | Integer | Yes | 수정할 게시글 ID |  |
+    | title | String | no | 수정할 게시글 제목 | 기존 게시글 제목 |
+    | content | String | no | 수정할 게시글 내용 | 기존 게시글 내용 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[POST]` 게시판 생성 (일반 회원)**
+    
+    
+    | Description | 게시글 등록 API |
+    | --- | --- |
+    | URL | /user/board/reg |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | Request Part |  |  |  |  |
+    | title | String | yes | 게시글 제목 |  |
+    | content | String | yes | 게시글 내용 |  |
+    | file | MultipartFile | no | 게시글에 등록할 파일 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
 ## 댓글
 
 ---
@@ -1566,8 +2387,335 @@
 
 ---
 
-## 파일
+- `**[GET]` 작성한 댓글 리스트 (일반 유저)**
+    
+    
+    | Description | 로그인한 유저가 작성한 댓글 리스트 API |
+    | --- | --- |
+    | URL | /user/comment/list/forUser |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    |  |  |  |  |  |
+    | url params |  |  |  |  |
+    |  |  |  |  |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
 
 ## 1대1 문의
 
+---
+
+- `**[POST]` 1대1 문의 Question 생성 (일반 회원)**
+    
+    
+    | Description | 1대1문의 생성 API |
+    | --- | --- |
+    | URL | /user/inquiry/question |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | question | String | Yes | 1대1 문의 질문 내용 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[DELETE | POST]` 1대1 문의 삭제 (일반 회원)**
+    
+    
+    | Description | 1대1 문의 의 상태가 질문 만 존재하고 답변이 존재하지 않을경우 삭제 가능 한 일반 회원용 1대1 문의 삭제 API |
+    | --- | --- |
+    | URL | /user/inquiry/delete |
+    | Auth Required | yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | inquiryId | Integer | Yes | 삭제할 1대1 문의 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        { message : "1대1 문의 삭제가 정상적으로 완료되었습니다."}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 1대1 문의 디테일 (일반회원)**
+    
+    
+    | Description | 1대1 문의 데이터 출력 API |
+    | --- | --- |
+    | URL | /user/inquiry |
+    | Auth Required | yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | inquiryId | Integer | yes | 1대1문의 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 1대1 문의 리스트 (일반 회원)**
+    
+    
+    | Description | 로그인한 유저의 1대1 문의 리스트 출력 API |
+    | --- | --- |
+    | URL | /admin/inquiry/list |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | url params |  |  |  |  |
+    | search | String | no | 문의 “질문” 검색어 | “” |
+    | page | Integer | no | 페이지 번호 | 1 |
+    | order | String | no | 리스트 오더 필터링 | 최신 순서 |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
 ## QnA
+
+---
+
+- `**[DELETE | POST]` QnA 삭제 (일반 회원)**
+    
+    
+    | Description | QnA 의 답변이 존재하지 않을 때 삭제(비활성화) 가능한 API |
+    | --- | --- |
+    | URL | /user/qna/question/delete |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | qnaId | Integer | Yes | 삭제할 QnA ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` QnA 디테일 (일반 회원)**
+    
+    
+    | Description | QnA 디테일 API |
+    | --- | --- |
+    | URL | /qna/detail |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | qnaId | Integer | Yes | QnA 디테일 관련 ID |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` 작성한 QnA 리스트 (일반 회원)**
+    
+    
+    | Description | 로그인한 유저가 작성한 QnA 리스트 API |
+    | --- | --- |
+    | URL | /user/qna/list/forUser |
+    | Auth Required | Yes |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[POST]` QnA Question 생성 (일반 회원)**
+    
+    
+    | Description | QnA 질문 생성 API |
+    | --- | --- |
+    | URL | /user/qna/question |
+    | Auth Required | Yes |
+    
+    | Paramater | Type  | Required | Description | Default |
+    | --- | --- | --- | --- | --- |
+    | body params |  |  |  |  |
+    | question | String | Yes | QnA 질문 내용 |  |
+    - **🧑🏻‍💻 Header Example ( Authorization )**
+        
+        ```jsx
+         
+        header : { 
+        		Authorization : Json Web Token 
+        } 
+        ```
+        
+    - **✅ Response 200**
+        
+        ```jsx
+        {}
+        ```
+        
+    - **✅ Response 404**
+        
+        ```jsx
+        {}
+        ```
+        
+
+---
+
+- `**[GET]` QnA 리스트 (일반 회원)**
