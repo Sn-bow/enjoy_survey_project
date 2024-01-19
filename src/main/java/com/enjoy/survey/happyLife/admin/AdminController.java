@@ -10,7 +10,9 @@ import com.enjoy.survey.happyLife.user.UserEntity;
 import com.enjoy.survey.happyLife.user.dto.UserSignUpDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,36 +28,36 @@ public class AdminController {
     // ============== 유저 ====================
     // TODO : 유저 정보 변경
     @PostMapping("/admin/modify/user_info")
-    public String userInfoModify(@RequestBody UserSignUpDto userModifyInfo) {
+    public ResponseEntity<?> userInfoModify(@RequestBody UserSignUpDto userModifyInfo) {
         int result = adminService.userInfoModify(userModifyInfo);
         if (result > 0) {
-            return "회원 정보가 정상적으로 변경되었습니다";
+            return ResponseEntity.ok("회원 정보가 정상적으로 변경되었습니다");
         }else {
-            return "회원 정보 변경을 실패하였습니다.";
+            return ResponseEntity.status(401).body("회원 정보 변경 정보를 확인해주세요.");
         }
     }
 
     // TODO : 유저 삭제 (= 비활성화)
     @Operation(summary = "관리자 계정에서 사용자들 계정 비활성화 API", description = "관리자 계정에서 사용자들 계정 비활성화 API")
     @PostMapping("/admin/user/delete")
-    public String deleteUser(@RequestBody Integer userId) {
+    public ResponseEntity<?> deleteUser(@RequestBody Integer userId) {
         int result = adminService.deleteUser(userId);
         if (result > 0) {
-            return "회원 삭제가 완료되었습니다.";
+            return ResponseEntity.ok("회원 삭제가 완료되었습니다.");
         }else {
-            return "회원 삭제에 실패하였습니다.";
+            return ResponseEntity.status(401).body("회원 아이디가 올바르지 않습니다.");
         }
     }
 
         // TODO : 유저 선택 삭제 (= 비활성화)
     @Operation(summary = "관리자 계정에서 사용자들 계정 리스트 비활성화 API", description = "관리자 계정에서 사용자들 계정 리스트 비활성화 API")
     @PostMapping("/admin/user/delete/list")
-    public String choiceDeleteUser(@RequestBody List<Integer> userIds) {
+    public ResponseEntity<?> choiceDeleteUser(@RequestBody List<Integer> userIds) {
         int result = adminService.choiceDeleteUser(userIds);
         if(result > 0) {
-            return "회원 삭제가 완료 되었습니다.";
+            return ResponseEntity.ok("회원 삭제가 완료 되었습니다.");
         }else {
-            return "회원 삭제에 실패하였습니다.";
+            return ResponseEntity.status(401).body("삭제할 회원 아이디가 올바르지 않습니다.");
         }
     }
 

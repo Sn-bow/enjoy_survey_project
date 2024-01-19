@@ -8,6 +8,7 @@ import com.enjoy.survey.happyLife.config.auth.PrincipalDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             // Unrecognized token 'username': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
             // 와 같은 에러 발생시에 Json 형식으로 PostMan에서 로그인을 진행하였는지 확인해볼것
-            System.out.println("========= fhrm1");
             loginUser = om.readValue(request.getInputStream(), UserEntity.class);
-            System.out.println("========= fhrm2");
 
             // 로그인할려는 유저가 delete_state 가 true인 경우 비로그인 처리를 하기위해 설정
             UserEntity user = null;

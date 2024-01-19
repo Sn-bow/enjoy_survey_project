@@ -10,6 +10,7 @@ import com.enjoy.survey.happyLife.user.dto.UserSimpleInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Tag(name = "유저 컨트롤러", description = "유저에 대한 API")
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -26,8 +28,13 @@ public class UserController {
     private final BoardService boardService;
 
     @GetMapping("/user/test")
-    public String userTest() {
-        return "user role test complete";
+    public ResponseEntity<?> userTest(@RequestHeader(name = "Authorization") String jwtToken) {
+        if(jwtToken == null) {
+            System.out.println("로그인 되어있지 않음");
+            return ResponseEntity.status(403).body("해당 사이트 접속 권한이 존재하지 않습니다 로그인을 시도해주세요");
+        }else {
+            return ResponseEntity.ok("정상적인 권한을 가지고 있어 접속이 가능합니다.");
+        }
     }
     @GetMapping("/manager/test")
     public String managerTest() {
@@ -155,6 +162,7 @@ public class UserController {
     // ==============================================================================================================
     // ==============================================================================================================
     // TODO : ERROR 처리 예시 코드
+    @CrossOrigin
     @GetMapping("/test/test/{id}")
     public ResponseEntity<?> getExample(@PathVariable int id) {
         if(id <=0 ) {
